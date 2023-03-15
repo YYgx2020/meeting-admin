@@ -1,16 +1,16 @@
-# hrms-web
+# 小型公司人资管理系统前端
 
-## Project setup
+## 安装依赖
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 启动命令
 ```
 npm run dev
 ```
 
-### Compiles and minifies for production
+### 打包命令
 ```
 npm run build
 ```

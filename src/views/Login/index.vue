@@ -3,7 +3,7 @@
     <!-- 标题 -->
     <div class="login-panel">
       <div class="title">
-        <h1>小型人资管理系统</h1>
+        <h1>小型公司人资管理系统</h1>
       </div>
       <div class="login-box">
         <h3>欢迎登录</h3>
