@@ -1,28 +1,55 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+};
 </script>
 
-<style>
+<style lang="less">
+* {
+  margin: 0;
+  padding: 0;
+}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 60px; */
+}
+
+// /deep/ .el-popover {
+//     min-width: 50px;
+//   }
+
+// 修改头像的 el-popover 样式
+.my-popover {
+  min-width: 60px !important;
+  text-align: center !important;
+  .more-control {
+    // margin-top: 140px;
+    // position: absolute;
+    // width: 80px;
+    // background: #fff;
+    // box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+    // padding: 8px;
+    // border-radius: 10px;
+
+    .more-control-item {
+      line-height: 36px;
+      font-size: 14px;
+    }
+
+    .more-control-item:hover {
+      cursor: pointer;
+      color: #409eff;
+    }
+  }
 }
 </style>
