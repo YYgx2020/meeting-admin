@@ -76,3 +76,30 @@ export function getAdminInfoByCode(data) {
     params: data,
   })
 }
+
+// 重置密码
+export function changePassword(data) {
+  return axios({
+    url: '/api/admin/changePassword',
+    method: 'post',
+    data,
+  })
+}
+
+// 获取员工信息
+export function getStaffList(data) {
+  return axios({
+    url: '/api/staff/getAll',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 更新员工信息
+export function updateStaffInfo(data) {
+  return axios({
+    url: '/api/staff/adminUpdate',
+    method: 'post',
+    data,
+  })
+}

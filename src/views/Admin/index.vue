@@ -9,7 +9,7 @@
       - 给超级管理员查看其他管理员的信息并审核，主要操作有，查看详情、删除
     -->
     <div class="top-panel">
-      <el-input placeholder="支持工号查看" v-model="code"></el-input>
+      <el-input placeholder="仅支持工号查询" v-model="code"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchAdminByCode()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
     </div>
@@ -18,23 +18,13 @@
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="120">
       </el-table-column>
-      <el-table-column prop="gender" label="性别" width="100">
-      </el-table-column>
-      <el-table-column prop="age" label="年龄" width="100">
-      </el-table-column>
-      <el-table-column prop="phone" label="电话" width="120">
-      </el-table-column>
-      <el-table-column prop="email" label="邮箱" width="200">
-      </el-table-column>
-      <el-table-column prop="department" label="部门" width="120">
-      </el-table-column>
       <el-table-column prop="service_status" label="在职情况" width="100"
         :filters="[{ text: '离职', value: 0 }, { text: '在职', value: 1 }]" :filter-method="filterServiceStatus"
         filter-placement="bottom-end">
         <template slot-scope="scope">
           <el-tag :type="scope.row.service_status === 0 ? 'danger' : 'success'" disable-transitions>{{
             scope.row.service_status === 0 ? '离职' : '在职' }}</el-tag>
-        </template>>
+        </template>
       </el-table-column>
       <el-table-column prop="apply_status" label="认证情况" width="100"
         :filters="[{ text: '未认证', value: 0 }, { text: '已认证', value: 1 }]" :filter-method="filterApplyStatus"
@@ -43,6 +33,19 @@
           <el-tag :type="scope.row.apply_status === 0 ? 'danger' : 'success'" disable-transitions>{{
             scope.row.apply_status === 0 ? '未认证' : '已认证' }}</el-tag>
         </template>>
+      </el-table-column>
+      <el-table-column  prop="gender" label="性别" width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.gender === 0 ? '女' : '男' }}</span>
+        </template>
+      </el-table-column >
+      <el-table-column prop="age" label="年龄" width="100">
+      </el-table-column>
+      <el-table-column prop="phone" label="电话" width="120">
+      </el-table-column>
+      <el-table-column prop="email" label="邮箱" width="200">
+      </el-table-column>
+      <el-table-column prop="department" label="部门" width="120">
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="200">
         <template slot-scope="scope">

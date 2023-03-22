@@ -6,7 +6,7 @@
       2.学生/教师认证申请审核 UserManagement
       3.会议室管理 roomManagement
     -->
-    <el-menu :router='true' default-active="/home/databoard" class="el-menu-vertical-demo" background-color="#304156"
+    <el-menu :router='true' :default-active="path" class="el-menu-vertical-demo" background-color="#304156"
       text-color="#fff" active-text-color="#409EFF">
       <div v-for="(item, index) in menus" :key="index + ''">
         <el-menu-item :index="item.path" v-if="index !== menus.length - 1">
@@ -37,12 +37,14 @@ export default {
   name: 'Menu',
   data() {
     return {
+      path: null,
       menus: [],
       adminInfo: null,
     }
   },
   created() {
-    // console.log(this.$router.options.routes);
+    this.path = window.location.pathname;
+    console.log(window.location.pathname);
     // console.log(this.$store.state.adminInfo);
     this.adminInfo = this.$store.state.adminInfo;
     // 目前菜单较少

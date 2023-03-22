@@ -67,8 +67,6 @@ export default {
     background-color: #304156;
     color: #fff;
     text-align: center;
-    // line-height: 200px;
-    height: 100vh;
 
     .logo {
       line-height: 60px;

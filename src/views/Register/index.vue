@@ -5,39 +5,19 @@
       >已有账号，返回登录</el-button
     > -->
       <h3 class="title-tip">请填写注册信息</h3>
-      <el-form
-        label-position="left"
-        label-width="80px"
-        :model="registerForm"
-        :rules="rules"
-        ref="registerForm"
-      >
+      <el-form label-position="left" label-width="80px" :model="registerForm" :rules="rules" ref="registerForm">
         <!-- 工号 -->
         <el-form-item label="工号" prop="code">
-          <el-input
-            placeholder="请确认您的工号"
-            v-model="registerForm.code"
-          ></el-input>
+          <el-input placeholder="请确认您的工号" v-model="registerForm.code"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input
-            placeholder="请输入密码"
-            type="password"
-            v-model="registerForm.password"
-          ></el-input>
+          <el-input placeholder="请输入密码" type="password" v-model="registerForm.password"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="verifyPwd">
-          <el-input
-            placeholder="请确认您的密码"
-            type="password"
-            v-model="registerForm.verifyPwd"
-          ></el-input>
+          <el-input placeholder="请确认您的密码" type="password" v-model="registerForm.verifyPwd"></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="name">
-          <el-input
-            placeholder="请输入您的真实姓名"
-            v-model="registerForm.name"
-          ></el-input>
+          <el-input placeholder="请输入您的真实姓名" v-model="registerForm.name"></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="registerForm.gender">
@@ -46,49 +26,23 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="年龄" prop="age">
-          <el-input
-            placeholder="请输入您的真实年龄"
-            v-model="registerForm.age"
-          ></el-input>
+          <el-input placeholder="请输入您的真实年龄" v-model="registerForm.age"></el-input>
         </el-form-item>
         <el-form-item label="电话" prop="phone">
-          <el-input
-            placeholder="请输入您的手机号"
-            v-model="registerForm.phone"
-            maxlength="11"
-          ></el-input>
+          <el-input placeholder="请输入您的手机号" v-model="registerForm.phone" maxlength="11"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input
-            placeholder="请输入您的邮箱"
-            v-model="registerForm.email"
-          ></el-input>
+          <el-input placeholder="请输入您的邮箱" v-model="registerForm.email"></el-input>
         </el-form-item>
         <el-row>
-          <el-input
-            maxlength="6"
-            placeholder="请输入验证码"
-            v-model="registerForm.verifyCode"
-          ></el-input>
-          <el-button
-            :disabled="canSendCode"
-            type="primary"
-            @click="sendVerifyCode()"
-            >{{
-              canSendCode ? captchaTime + " 秒后重试" : "获取验证码"
-            }}</el-button
-          >
+          <el-input maxlength="6" placeholder="请输入验证码" v-model="registerForm.verifyCode"></el-input>
+          <el-button :disabled="canSendCode" type="primary" @click="sendVerifyCode()">{{
+            canSendCode ? captchaTime + " 秒后重试" : "获取验证码"
+          }}</el-button>
         </el-row>
-        <el-button
-          :disabled="loading"
-          class="register-btn"
-          type="primary"
-          @click="registerEvent(registerForm)"
-          >申请注册</el-button
-        >
-        <el-button class="return-to-login" @click="returnLoginEvent()"
-          >已有账号，返回登录</el-button
-        >
+        <el-button :disabled="loading" class="register-btn" type="primary"
+          @click="registerEvent(registerForm)">申请注册</el-button>
+        <el-button class="return-to-login" @click="returnLoginEvent()">已有账号，返回登录</el-button>
       </el-form>
     </div>
   </div>
@@ -101,24 +55,6 @@ import { Notification } from "element-ui";
 export default {
   name: "register",
   data() {
-    // 判断当前工号是否已经被注册过
-    // const checkCode = (rule, value, callback) => {
-    //   if (value === null || value === "") {
-    //     callback(new Error("请输入您的工号"));
-    //   } else {
-    //     // 发送请求去查看当前员工的工号是否已经被注册
-    //     checkAdminCode({ code: value })
-    //       .then((res) => {
-    //         console.log("res: ", res);
-    //         if (!res.data.result) {
-    //           callback(new Error("当前管理员工号已经被注册"));
-    //         }
-    //       })
-    //       .catch((err) => {
-    //         console.log("err: ", err);
-    //       });
-    //   }
-    // };
     // 确认密码
     const verifyPwd = (rule, value, callback) => {
       // console.log("value: ", value);
@@ -305,7 +241,7 @@ export default {
               "提示",
               {
                 confirmButtonText: "确定",
-                callback: (action) => {},
+                callback: (action) => { },
               }
             );
           }
@@ -331,6 +267,7 @@ export default {
 .register-page {
   display: flex;
   justify-content: center;
+
   .register-box {
     display: flex;
     width: 360px;
@@ -345,23 +282,28 @@ export default {
     flex-direction: column;
     text-align: left;
     margin-bottom: 40px;
+
     .title-tip {
       margin-bottom: 30px;
     }
+
     .el-form {
       .el-row {
         display: flex;
         flex-direction: row;
+
         .el-input {
           margin-right: 20px;
         }
       }
     }
+
     .register-btn {
       margin-top: 22px;
       margin-bottom: 22px;
       width: 100%;
     }
+
     .return-to-login {
       width: 100%;
       margin: 0;
