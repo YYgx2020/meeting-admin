@@ -1,18 +1,18 @@
 <template>
-  <div class="department-page">
+  <div class="job-page">
     <div class="top-panel">
       <el-input placeholder="仅支持工号查询" v-model="code"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchStaffByCode()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
     </div>
-    <el-table :data="staffDepartmentData" border style="width: 100%">
+    <el-table :data="staffJobData" border style="width: 100%">
       <el-table-column fixed prop="code" label="工号" width="100">
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="120">
       </el-table-column>
-      <el-table-column prop="pre_department" label="原部门" width="100">
+      <el-table-column prop="pre_job" label="原职位" width="100">
       </el-table-column>
-      <el-table-column prop="new_department" label="新部门" width="120">
+      <el-table-column prop="new_job" label="新职位" width="120">
       </el-table-column>
       <el-table-column prop="reason" label="申请原因" width="200">
       </el-table-column>
@@ -39,14 +39,14 @@
 </template>
 
 <script>
-import { getAllStaffDepartmentRecord, getStaffDepartmentInfoByCode, updateStaffDepartmentInfoByCode } from '@/api';
+import { getAllStaffJobRecord, getStaffJobInfoByCode, updateStaffJobInfoByCode } from '@/api';
 import dayjs from 'dayjs';
 export default {
-  name: 'department',
+  name: 'job',
   data() {
     return {
       code: null,
-      staffDepartmentData: [],
+      staffJobData: [],
     }
   },
   created() {
@@ -55,7 +55,7 @@ export default {
 
   methods: {
     getTableData() {
-      getAllStaffDepartmentRecord().then(res => {
+      getAllStaffJobRecord().then(res => {
         console.log(res);
         // let tableData = JSON.parse(JSON.stringify(res.data.result));
         this.initData(res.data.result);
@@ -65,7 +65,7 @@ export default {
       })
     },
     initData(tableData) {
-      this.staffDepartmentData = tableData.map(item => {
+      this.staffJobData = tableData.map(item => {
         console.log(item);
         item.createdAt = dayjs(item.createdAt).format("YYYY-MM-DD HH:mm:ss");
         switch (item.status) {
@@ -103,8 +103,8 @@ export default {
       if (this.code === '' || this.code === null) {
         return;
       } else {
-        getStaffDepartmentInfoByCode({ code: this.code }).then(res => {
-          this.staffDepartmentData = [];
+        getStaffJobInfoByCode({ code: this.code }).then(res => {
+          this.staffJobData = [];
           if (res.data.result !== null) {
             this.initData(res.data.result);
             // this.staffJobData.push(res.data.result);
@@ -123,7 +123,7 @@ export default {
     pass(row) {
       row = JSON.parse(JSON.stringify(row));
       row.status = 1;
-      updateStaffDepartmentInfoByCode(row).then(res => {
+      updateStaffJobInfoByCode(row).then(res => {
         this.getTableData();
       })
     },
@@ -132,7 +132,7 @@ export default {
     noPass(row) {
       row = JSON.parse(JSON.stringify(row));
       row.status = -1;
-      updateStaffDepartmentInfoByCode(row).then(res => {
+      updateStaffJobInfoByCode(row).then(res => {
         this.getTableData();
       })
     },

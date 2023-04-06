@@ -19,7 +19,7 @@ _axios.interceptors.request.use(
   (req) => {
     // const token = localStorage.getItem('token')
 
-    const token = Cookies.get('hrms_token')
+    const token = Cookies.get("hrms_token");
     // console.log("this: ", this);
     // console.log("store: ", store);
     // const token = store.state.token;
@@ -48,10 +48,12 @@ _axios.interceptors.response.use(
       });
       return Promise.reject(data);
     } else {
-      Message({
-        message: data.message,
-        type: "success",
-      });
+      if (data.message) {
+        Message({
+          message: data.message,
+          type: "success",
+        });
+      }
     }
     return resp;
   },
@@ -70,13 +72,12 @@ _axios.interceptors.response.use(
         type: "error",
         message: "登陆已过期,请重新登陆",
       });
-    }
-    else {
+    } else {
       Notification({
-        title: '错误',
-        type: 'error',
+        title: "错误",
+        type: "error",
         message: err.response.data,
-      })
+      });
     }
     return Promise.reject(err);
   }

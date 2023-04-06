@@ -103,3 +103,161 @@ export function updateStaffInfo(data) {
     data,
   })
 }
+
+// 获取所有员工调岗记录
+export function getAllStaffJobRecord(data) {
+  return axios({
+    url: '/api/job/getAll',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 通过员工工号查找员工的调岗信息
+export function getStaffJobInfoByCode(data) {
+  return axios({
+    url: '/api/job/getStaffJobInfoByCode',
+    method: 'get',
+    params: data,
+  })
+}
+
+export function updateStaffJobInfoByCode(data) {
+  return axios({
+    url: '/api/job/updateStaffJobInfoByCode',
+    method: 'post',
+    data,
+  })
+}
+
+// 更新员工宿舍信息
+export function getAllStaffDormitoryRecord(data) {
+  return axios({
+    url: '/api/dormitory/getAllStaffDormitoryRecord',
+    method: 'get',
+    params: data,
+  });
+}
+export function getStaffDormitoryInfoByCode(data) {
+  return axios({
+    url: '/api/dormitory/getStaffDormitoryInfoByCode',
+    method: 'get',
+    params: data,
+  });
+}
+export function updateStaffDormitoryInfoByCode(data) {
+  return axios({
+    url: '/api/dormitory/updateStaffDormitoryInfoByCode',
+    method: 'post',
+    data,
+  });
+}
+
+// 部门调换审批相关接口
+export function getAllStaffDepartmentRecord(data) {
+  return axios({
+    url: '/api/department/getAllStaffDepartmentRecord',
+    method: 'get',
+    params: data,
+  })
+} 
+
+export function getStaffDepartmentInfoByCode(data) {
+  return axios({
+    url: '/api/department/getStaffDepartmentInfoByCode',
+    method: 'get',
+    params: data,
+  })
+}
+
+export function updateStaffDepartmentInfoByCode(data) {
+  return axios({
+    url: '/api/department/updateStaffDepartmentInfoByCode',
+    method: 'post',
+    data,
+  })
+}
+
+// 离职相关的
+export function getAllStaffLeaveRecord(data) {
+  return axios({
+    url: '/api/leave/getAllStaffLeaveRecord',
+    method: 'get',
+    params: data,
+  })
+}
+
+export function getStaffLeaveInfoByCode(data) {
+  return axios({
+    url: '/api/leave/getStaffLeaveInfoByCode',
+    method: 'get',
+    params: data,
+  })
+}
+
+export function updateStaffLeaveInfoByCode(data) {
+  return axios({
+    url: '/api/leave/updateStaffLeaveInfoByCode',
+    method: 'post',
+    data,
+  })
+}
+
+// 请假相关
+export function getAllStaffVacateRecord(data) {
+  return axios({
+    url: '/api/vacate/getAllStaffVacateRecord',
+    method: 'get',
+    params: data,
+  })
+}
+export function getStaffVacateInfoByCode(data) {
+  return axios({
+    url: '/api/vacate/getStaffVacateInfoByCode',
+    method: 'get',
+    params: data,
+  })
+}
+export function updateStaffVacateInfoByCode(data) {
+  return axios({
+    url: '/api/vacate/updateStaffVacateInfoByCode',
+    method: 'post',
+    data,
+  })
+}
+
+
+// 考勤相关
+export function getAllStaffAttendanceRecord(data) {
+  return axios({
+    url: '/api/attendance/getAllStaffAttendanceRecord',
+    method: 'get',
+    params: data,
+  })
+}
+
+
+// 新闻管理相关接口
+export function addArticle(data) {
+  return axios({
+    url: '/api/news/add',
+    method: 'post',
+    data,
+  })
+}
+
+export function updateArticle(data) {
+  return axios({
+    url: '/api/news/update',
+    method: 'post',
+    data,
+  })
+}
+
+export function getNewsList(data) {
+  return axios({
+    url: '/api/news/getNewsList',
+    method: 'get',
+    params: data,
+  })
+}

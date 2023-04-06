@@ -106,6 +106,14 @@ const routes = [
             },
           },
           {
+            path: "/home/approve/job",
+            name: "job",
+            component: () => import("@/views/Job"),
+            meta: {
+              title: "岗位调换审批",
+            },
+          },
+          {
             path: "/home/approve/department",
             name: "department",
             component: () => import("@/views/Department"),
@@ -141,6 +149,15 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/home/news/editor',
+    name: 'editor',
+    component: () => import('@/views/Editor'),
+    meta: {
+      title: '新闻编辑',
+      index: 4,
+    }
+  }
 ];
 
 const router = new VueRouter({
@@ -159,6 +176,12 @@ router.beforeEach((to, from, next) => {
   // //from 来源
   // //next 放行
   const userInfo = Cookie.get('userInfo') ? JSON.parse(Cookie.get('userInfo')) : null;
+  // console.log(to, from);
+  // if (userInfo) {
+  //   // 跳转到 home 页面
+  //   next("home");
+  //   // next();
+  // } else 
   if (to.name === 'login' || to.name === 'register') {
     next();
   } else if (!userInfo) {

@@ -68,8 +68,8 @@
         :filters="[{ text: '离职', value: 0 }, { text: '在职', value: 1 }]" :filter-method="filterServiceStatus"
         filter-placement="bottom-end">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.service_status === 0 ? 'danger' : 'success'" disable-transitions>{{
-            scope.row.service_status === 0 ? '离职' : '在职' }}</el-tag>
+          <el-tag :type="scope.row.service_status == 0 ? 'danger' : 'success'" disable-transitions>{{
+            scope.row.service_status == 0 ? '离职' : '在职' }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="apply_status" label="认证情况" width="100"
@@ -103,7 +103,7 @@
           <!-- <el-button type="text" size="small" @click="lookMoreStaffInfo(scope.row.id)">查看更多</el-button> -->
           <el-button type="text" size="small" v-if="scope.row.apply_status === 0" @click="pass(scope.row)">通过认证</el-button>
           <el-button type="text" size="small" v-if="scope.row.apply_status === -1" @click="pass(scope.row)">解冻</el-button>
-          <el-button type="text" size="small" v-if="scope.row.apply_status === 1" @click="freeze(scope.row)">冻结账号</el-button>
+          <el-button type="text" size="small" v-if="scope.row.apply_status === 1 && scope.row.service_status != 0" @click="freeze(scope.row)">冻结账号</el-button>
           <el-button type="text" size="small" style="color: #f56c6c;" @click="deleteStaff(scope.row)">删除</el-button>
         </template>
       </el-table-column>
