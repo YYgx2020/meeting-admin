@@ -14,12 +14,14 @@
     </div>
     <el-dialog title="提交提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
       <p>文章标题: {{ title }}</p>
-      <p>上传文章封面</p>
+      <p>上传文章封面（选择本地图片）</p>
       <el-upload class="avatar-uploader" :http-request="uploadHttp" action="#" :show-file-list="false"
         :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
         <img v-if="cover" :src="cover" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
+      <p>或者上传封面链接</p>
+      <el-input v-model="cover" placeholder="上传链接"></el-input>
       <p>文章简介：</p>
       <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4 }" placeholder="请输入内容" v-model="brief">
       </el-input>
@@ -251,9 +253,27 @@ export default {
     },
 
     // 发布文章
-    submitEvent() {
+    async submitEvent() {
       console.log(this.title);
-      updateArticle();
+      const {
+        title,
+        article_id,
+        cover,
+        brief,
+        content,
+        html, } = this;
+      await updateArticle({
+        title,
+        article_id,
+        cover,
+        brief,
+        content,
+        html,
+        is_publish: true
+      })
+      this.$router.replace({
+        name: 'news',
+      });
     },
 
     handleAvatarSuccess(e) {
@@ -284,6 +304,8 @@ export default {
     },
 
     handleClose(option) {
+      console.log('关闭对话框');
+      this.dialogVisible = false;
     },
   }
 }
@@ -302,6 +324,7 @@ export default {
     width: calc(100vw - 170px);
 
     input {
+      width: 100%;
       line-height: 60px;
       outline: none;
       border: 0;
@@ -325,6 +348,12 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+}
+
+.el-dialog {
+  p {
+    margin: 10px 0px;
+  }
 }
 
 .avatar-uploader .el-upload:hover {

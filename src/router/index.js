@@ -157,6 +157,15 @@ const routes = [
       title: '新闻编辑',
       index: 4,
     }
+  },
+  {
+    path: '/home/news/detail',
+    name: 'detail',
+    component: () => import('@/views/Detail'),
+    meta: {
+      // title: '',
+      index: 5,
+    }
   }
 ];
 

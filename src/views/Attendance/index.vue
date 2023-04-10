@@ -7,21 +7,21 @@
       <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
     <el-table id="selectTable" :data="staffAttendanceData" border style="width: 100%">
-      <el-table-column prop="code" label="工号" width="100">
+      <el-table-column prop="code" label="工号">
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="120">
+      <el-table-column prop="name" label="姓名">
       </el-table-column>
-      <el-table-column prop="department" label="部门" width="120">
+      <el-table-column prop="department" label="部门">
       </el-table-column>
-      <el-table-column prop="job" label="岗位" width="120">
+      <el-table-column prop="job" label="岗位">
       </el-table-column>
-      <el-table-column prop="date" label="日期" width="120">
+      <el-table-column prop="date" label="日期">
       </el-table-column>
-      <el-table-column prop="start_work_time" label="上班时间" width="120">
+      <el-table-column prop="start_work_time" label="上班时间">
       </el-table-column>
-      <el-table-column prop="end_work_time" label="下班时间" width="120">
+      <el-table-column prop="end_work_time" label="下班时间">
       </el-table-column>
-      <el-table-column prop="on_work_time" label="总工时" width="120">
+      <el-table-column prop="on_work_time" label="总工时">
       </el-table-column>
     </el-table>
   </div>

@@ -1,3 +1,7 @@
+/* 
+  第一个和第二个文件都是用于将本地图片传到阿里云存储中
+*/
+
 const OSS = require('ali-oss');
 
 const client = new OSS({

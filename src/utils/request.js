@@ -1,4 +1,7 @@
 // 封装 axios
+/* 
+  用于封装请求方法，在请求发送出去之前验证用户的身份，以及请求完成之后对请求到的数据进行处理
+*/
 import axios from "axios";
 import { Notification, Message } from "element-ui";
 import Cookies from "js-cookie";

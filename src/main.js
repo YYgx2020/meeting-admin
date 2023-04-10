@@ -1,3 +1,7 @@
+/* 
+  初始化vue实例，并引入所需插件
+*/
+
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";

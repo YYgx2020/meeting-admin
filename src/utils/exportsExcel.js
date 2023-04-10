@@ -1,4 +1,7 @@
-//将包导入
+/* 
+  将表格里面的数据生成 excel 数据然后导出
+*/
+// 将包导入
 import FileSaver from "file-saver";
 import * as XLSX from 'xlsx/xlsx.mjs'
 

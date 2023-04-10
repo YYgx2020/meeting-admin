@@ -254,9 +254,46 @@ export function updateArticle(data) {
   })
 }
 
+// 获取文章列表
 export function getNewsList(data) {
   return axios({
     url: '/api/news/getNewsList',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 按关键词搜索文章
+export function searchNewsByKeyWord(data) {
+  return axios({
+    url: '/api/news/searchNewsByKeyWord',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 删除新闻
+export function delArticle(data) {
+  return axios({
+    url: '/api/news/delArticle',
+    method: 'post',
+    data,
+  })
+}
+
+// 获取单篇新闻的接口
+export function getArticleInfo(data) {
+  return axios({
+    url: '/api/news/getArticleInfo',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 获取岗位列表
+export function getJobList(data) {
+  return axios({
+    url: '/api/recruitment/getJobList',
     method: 'get',
     params: data,
   })
