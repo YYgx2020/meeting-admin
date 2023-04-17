@@ -6,19 +6,19 @@
       <el-button type="primary" plain @click="resetData()">重置</el-button>
     </div>
     <el-table :data="staffDepartmentData" border style="width: 100%">
-      <el-table-column fixed prop="code" label="工号" width="100">
+      <el-table-column fixed prop="code" label="工号">
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="120">
+      <el-table-column prop="name" label="姓名">
       </el-table-column>
-      <el-table-column prop="pre_department" label="原部门" width="100">
+      <el-table-column prop="pre_department" label="原部门">
       </el-table-column>
-      <el-table-column prop="new_department" label="新部门" width="120">
+      <el-table-column prop="new_department" label="新部门">
       </el-table-column>
-      <el-table-column prop="reason" label="申请原因" width="200">
+      <el-table-column prop="reason" label="申请原因">
       </el-table-column>
-      <el-table-column prop="createdAt" label="申请日期" width="200">
+      <el-table-column prop="createdAt" label="申请日期">
       </el-table-column>
-      <el-table-column prop="status" label="申请状态" width="100"
+      <el-table-column prop="status" label="申请状态" 
         :filters="[{ text: '审核中', value: 0 }, { text: '已通过', value: 1 }, { text: '不通过', value: -1 }, { text: '已取消', value: 2 }]"
         :filter-method="filterApplyStatus" filter-placement="bottom-end">
         <template slot-scope="scope">
@@ -26,7 +26,7 @@
             scope.row.statusText }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200">
+      <el-table-column fixed="right" label="操作">
         <template slot-scope="scope">
           <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
           <el-button type="text" size="small" v-if="scope.row.status === 0" @click="pass(scope.row)">通过</el-button>

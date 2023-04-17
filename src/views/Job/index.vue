@@ -6,19 +6,19 @@
       <el-button type="primary" plain @click="resetData()">重置</el-button>
     </div>
     <el-table :data="staffJobData" border style="width: 100%">
-      <el-table-column fixed prop="code" label="工号" width="100">
+      <el-table-column fixed prop="code" label="工号">
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="120">
+      <el-table-column prop="name" label="姓名">
       </el-table-column>
-      <el-table-column prop="pre_job" label="原职位" width="100">
+      <el-table-column prop="pre_job" label="原职位">
       </el-table-column>
-      <el-table-column prop="new_job" label="新职位" width="120">
+      <el-table-column prop="new_job" label="新职位">
       </el-table-column>
-      <el-table-column prop="reason" label="申请原因" width="200">
+      <el-table-column prop="reason" label="申请原因">
       </el-table-column>
-      <el-table-column prop="createdAt" label="申请日期" width="200">
+      <el-table-column prop="createdAt" label="申请日期">
       </el-table-column>
-      <el-table-column prop="status" label="申请状态" width="100"
+      <el-table-column prop="status" label="申请状态"
         :filters="[{ text: '审核中', value: 0 }, { text: '已通过', value: 1 }, { text: '不通过', value: -1 }, { text: '已取消', value: 2 }]"
         :filter-method="filterApplyStatus" filter-placement="bottom-end">
         <template slot-scope="scope">

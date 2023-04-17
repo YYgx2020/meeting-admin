@@ -37,7 +37,7 @@
         <el-row>
           <el-input maxlength="6" placeholder="请输入验证码" v-model="registerForm.verifyCode"></el-input>
           <el-button :disabled="canSendCode" type="primary" @click="sendVerifyCode()">{{
-            canSendCode ? captchaTime + " 秒后重试" : "获取验证码"
+            canSendCode ? captchaTime + " 秒后重试" : "获取邮箱验证码"
           }}</el-button>
         </el-row>
         <el-button :disabled="loading" class="register-btn" type="primary"
@@ -173,7 +173,7 @@ export default {
       }
       try {
         let res = await getVerifyCode({ email });
-        console.log("验证码获取结果：", res);
+        // console.log("验证码获取结果：", res);
         Notification({
           title: "成功",
           type: "success",

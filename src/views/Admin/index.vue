@@ -14,11 +14,11 @@
       <el-button type="primary" plain @click="resetData()">重置</el-button>
     </div>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column fixed prop="code" label="工号" width="100">
+      <el-table-column fixed prop="code" label="工号">
       </el-table-column>
-      <el-table-column prop="name" label="姓名" width="120">
+      <el-table-column prop="name" label="姓名">
       </el-table-column>
-      <el-table-column prop="service_status" label="在职情况" width="100"
+      <el-table-column prop="service_status" label="在职情况"
         :filters="[{ text: '离职', value: 0 }, { text: '在职', value: 1 }]" :filter-method="filterServiceStatus"
         filter-placement="bottom-end">
         <template slot-scope="scope">
@@ -26,7 +26,7 @@
             scope.row.service_status === 0 ? '离职' : '在职' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="apply_status" label="认证情况" width="100"
+      <el-table-column prop="apply_status" label="认证情况"
         :filters="[{ text: '未认证', value: 0 }, { text: '已认证', value: 1 }]" :filter-method="filterApplyStatus"
         filter-placement="bottom-end">
         <template slot-scope="scope">
@@ -34,20 +34,20 @@
             scope.row.apply_status === 0 ? '未认证' : '已认证' }}</el-tag>
         </template>>
       </el-table-column>
-      <el-table-column  prop="gender" label="性别" width="100">
+      <el-table-column  prop="gender" label="性别">
         <template slot-scope="scope">
           <span>{{ scope.row.gender === 0 ? '女' : '男' }}</span>
         </template>
       </el-table-column >
-      <el-table-column prop="age" label="年龄" width="100">
+      <el-table-column prop="age" label="年龄">
       </el-table-column>
-      <el-table-column prop="phone" label="电话" width="120">
+      <el-table-column prop="phone" label="电话">
       </el-table-column>
-      <el-table-column prop="email" label="邮箱" width="200">
+      <el-table-column prop="email" label="邮箱">
       </el-table-column>
-      <el-table-column prop="department" label="部门" width="120">
+      <el-table-column prop="department" label="部门">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200">
+      <el-table-column fixed="right" label="操作" width="120">
         <template slot-scope="scope">
           <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
           <el-button type="text" size="small" v-if="!scope.row.apply_status" @click="pass(scope.row)">通过认证</el-button>

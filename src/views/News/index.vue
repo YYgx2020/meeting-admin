@@ -5,7 +5,7 @@
         <el-input placeholder="输入搜索内容" v-model="keyWord"></el-input>
         <el-button type="primary" icon="el-icon-search" @click="searchNewsByKeyWord()">搜索</el-button>
         <el-button type="primary" plain @click="resetData()">重置</el-button>
-        <el-button type="danger" plain @click="delSelectedArticle()">批量删除</el-button>
+        <el-button type="danger" plain @click="delSelectedArticle(selectData)">批量删除</el-button>
       </div>
       <div class="publish-button">
         <el-button type="primary" @click="publishNewArticle()">发布新文章</el-button>
@@ -23,7 +23,7 @@
         <div class="item-title">
           <span>{{ item.title }}</span>
         </div>
-        <div class="editor-pancel">
+        <div class="editor-panel">
           <el-button @click.stop="toEditorPage(item)" type="text">编辑</el-button>
         </div>
       </div>
@@ -138,6 +138,7 @@ export default {
         limit: this.limit,
         offset: this.offset,
       }
+      this.selectData = [];
       getNewsList(data).then(res => {
         console.log(res);
         this.initData(res.data.result.rows, res.data.result.count);

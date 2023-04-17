@@ -29,22 +29,23 @@ const routes = [
   {
     path: "/home",
     name: "home",
-    redirect: "/home/databoard",
+    // redirect: "/home/databoard",
+    redirect: "/home/news",
     component: () => import("@/views/Home"),
     meta: {
       title: "首页",
       index: 3,
     },
     children: [
-      {
-        path: "/home/databoard",
-        name: "databoard",
-        icon: "iconfont icon-shouye-shouye",
-        component: () => import("@/views/Databoard"),
-        meta: {
-          title: "首页",
-        },
-      },
+      // {
+      //   path: "/home/databoard",
+      //   name: "databoard",
+      //   icon: "iconfont icon-shouye-shouye",
+      //   component: () => import("@/views/Databoard"),
+      //   meta: {
+      //     title: "首页",
+      //   },
+      // },
       {
         path: "/home/news",
         name: "news",

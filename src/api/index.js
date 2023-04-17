@@ -187,6 +187,15 @@ export function getAllStaffLeaveRecord(data) {
   })
 }
 
+// 获取员工的身份证信息和电话号码
+export function getStaffInfo(data) {
+  return axios({
+    url: '/api/leave/getStaffInfo',
+    method: 'get',
+    params: data,
+  })
+}
+
 export function getStaffLeaveInfoByCode(data) {
   return axios({
     url: '/api/leave/getStaffLeaveInfoByCode',
@@ -198,6 +207,15 @@ export function getStaffLeaveInfoByCode(data) {
 export function updateStaffLeaveInfoByCode(data) {
   return axios({
     url: '/api/leave/updateStaffLeaveInfoByCode',
+    method: 'post',
+    data,
+  })
+}
+
+// 通过审批
+export function passStaffLeave(data) {
+  return axios({
+    url: '/api/leave/pass',
     method: 'post',
     data,
   })
@@ -294,6 +312,69 @@ export function getArticleInfo(data) {
 export function getJobList(data) {
   return axios({
     url: '/api/recruitment/getJobList',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 新增岗位
+export function addJob(data) {
+  return axios({
+    url: '/api/recruitment/add',
+    method: 'post',
+    data,
+  })
+}
+
+// 编辑更新岗位信息
+export function updateJobInfo(data) {
+  return axios({
+    url: '/api/recruitment/update',
+    method: 'post',
+    data,
+  })
+}
+
+// 通过关键词搜索岗位
+export function searchJobByKeyWord(data) {
+  return axios({
+    url: '/api/recruitment/search',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 删除岗位信息
+export function del(data) {
+  return axios({
+    url: '/api/recruitment/del',
+    method: 'post',
+    data,
+  })
+}
+
+// 获取所有员工绩效
+export function getStaffPerformance(data) {
+  return axios({
+    url: '/api/performance/getAll',
+    method: 'get',
+    params: data,
+  })
+}
+
+// 更新员工绩效
+export function updateStaffPerformance(data) {
+  return axios({
+    url: '/api/performance/update',
+    method: 'post',
+    data,
+  })
+}
+
+// 查找员工绩效信息
+export function searchPerformance(data) {
+  return axios({
+    url: '/api/performance/search',
     method: 'get',
     params: data,
   })
