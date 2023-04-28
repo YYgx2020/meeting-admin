@@ -1,11 +1,12 @@
 <template>
   <div class="employee-page">
     <div class="top-panel">
-      <el-input placeholder="仅支持工号查询" v-model="code"></el-input>
-      <el-button type="primary" icon="el-icon-search" @click="searchAdminByCode()">查找</el-button>
+      <el-input placeholder="输入关键词查询" v-model="keyWord"></el-input>
+      <el-button type="primary" icon="el-icon-search" @click="searchStaffInfoByKeyWord()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table id="selectTable" :data="tableData" border style="width: 100%">
       <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
@@ -112,12 +113,13 @@
 </template>
 
 <script>
-import { getStaffList, updateStaffInfo  } from '@/api';
+import { getStaffList, updateStaffInfo, searchStaffInfoByKeyWord  } from '@/api';
+import { getExcel } from '../../utils/exportsExcel';
 export default {
   name: 'employee',
   data() {
     return {
-      code: '',  // 查找时输入的员工工号
+      keyWord: '',  // 查找时输入的员工工号
       tableData: [],
     }
   },
@@ -125,7 +127,27 @@ export default {
     this.initData();
   },
   methods: {
+
+    // 导出为表格
+    exportToExcel() {
+      getExcel('#selectTable', '表格');
+    },
     
+    searchStaffInfoByKeyWord() {
+      if (this.keyWord === '' || this.keyWord === null) {
+        return;
+      } else {
+        searchStaffInfoByKeyWord({ keyWord: this.keyWord }).then(res => {
+          this.tableData = [];
+          if (res.data.result !== null) {
+            // this.initData(res.data.result);
+            this.tableData = res.data.result;
+            // this.staffJobData.push(res.data.result);
+          }
+        })
+      }
+    },
+
     initData() {
       getStaffList().then(res => {
         this.tableData = res.data.result;
@@ -135,7 +157,7 @@ export default {
     },
     // 重置数据
     resetData() {
-      this.code = null;
+      this.keyWord = null;
       this.initData();
     },
     

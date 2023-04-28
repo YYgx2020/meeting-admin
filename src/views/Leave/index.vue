@@ -1,11 +1,12 @@
 <template>
   <div class="leave-page">
     <div class="top-panel">
-      <el-input placeholder="仅支持工号查询" v-model="code"></el-input>
+      <el-input placeholder="输入关键词查询" v-model="code"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchStaffByCode()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
-    <el-table :data="staffLeaveData" border style="width: 100%">
+    <el-table id="selectTable" :data="staffLeaveData" border style="width: 100%">
       <el-table-column fixed prop="code" label="工号">
       </el-table-column>
       <el-table-column prop="name" label="姓名">
@@ -41,7 +42,7 @@
           <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
           <!-- <el-button type="text" size="small" v-if="scope.row.status === 0" @click="pass(scope.row)">通过</el-button> -->
           <!-- 预览离职协议书 -->
-          <el-button v-if="scope.row.status === 0 || scope.row.status === 2 || scope.row.status === 3" type="text"
+          <el-button v-if="scope.row.status === 0 || scope.row.status === 2 || scope.row.status === 3 || scope.row.status === 1" type="text"
             @click="preview(scope.row)">预览</el-button>
           <el-button type="text" size="small" v-if="scope.row.status === 0 || scope.row.status === 2"
             style="color: #f56c6c;" @click="noPass(scope.row)">不通过</el-button>
@@ -65,7 +66,7 @@
             <p>身份证号码：{{ previewData.id_number }} </p>
             <p>联系电话：{{ previewData.phone }}</p>
             <p>根据《中华人民共和国劳动法》和双方协商，乙方自愿离开甲方公司，现甲、乙双方达成如下协议：</p>
-            <p>一、离职日期：2023年4月30日</p>
+            <p>一、离职日期：{{ previewData.createdAt }}</p>
             <p>二、离职原因：自愿离职</p>
             <!-- <p>{{ currentStaff.reason }}</p> -->
             <p>三、离职前乙方应当履行的职责和义务：</p>
@@ -128,6 +129,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
+import { getExcel } from '../../utils/exportsExcel';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 export default {
@@ -223,7 +225,7 @@ export default {
       if (this.code === '' || this.code === null) {
         return;
       } else {
-        getStaffLeaveInfoByCode({ code: this.code }).then(res => {
+        getStaffLeaveInfoByCode({ keyWord: this.code }).then(res => {
           this.staffLeaveData = [];
           if (res.data.result !== null) {
             this.initData(res.data.result);
@@ -320,6 +322,7 @@ export default {
           name: res.data.result.name,
           id_number: res.data.result.id_number,
           phone: res.data.result.phone,
+          createdAt: dayjs(item.createdAt).format("YYYY年MM月DD日"),
         }
         console.log(this.previewData);
         // this.currentStaff = item;
@@ -422,6 +425,11 @@ export default {
         console.log(res);
         this.getTableData();
       })
+    },
+
+    // 导出为表格
+    exportToExcel() {
+      getExcel('#selectTable', '表格');
     },
   },
 }

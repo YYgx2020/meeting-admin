@@ -1,11 +1,12 @@
 <template>
   <div class="vacate-page">
     <div class="top-panel">
-      <el-input placeholder="仅支持工号查询" v-model="code"></el-input>
-      <el-button type="primary" icon="el-icon-search" @click="searchStaffByCode()">查找</el-button>
+      <el-input placeholder="输入关键词查询" v-model="keyWord"></el-input>
+      <el-button type="primary" icon="el-icon-search" @click="search()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
-    <el-table :data="staffVacateData" border style="width: 100%">
+    <el-table id="selectTable" :data="staffVacateData" border style="width: 100%">
       <el-table-column fixed prop="code" label="工号">
       </el-table-column>
       <el-table-column prop="name" label="姓名">
@@ -39,13 +40,14 @@
 </template>
 
 <script>
-import { getAllStaffVacateRecord, getStaffVacateInfoByCode, updateStaffVacateInfoByCode } from '@/api';
+import { getAllStaffVacateRecord, getStaffVacateInfoByKeyWord, updateStaffVacateInfoByCode } from '@/api';
 import dayjs from 'dayjs';
+import { getExcel } from '../../utils/exportsExcel';
 export default {
   name: 'vacate',
   data() {
     return {
-      code: null,
+      keyWord: null,
       staffVacateData: [],
     }
   },
@@ -100,11 +102,11 @@ export default {
       return row.status === value;
     },
     // 通过员工工号查找员工调岗信息
-    searchStaffByCode() {
-      if (this.code === '' || this.code === null) {
+    search() {
+      if (this.keyWord === '' || this.keyWord === null) {
         return;
       } else {
-        getStaffVacateInfoByCode({ code: this.code }).then(res => {
+        getStaffVacateInfoByKeyWord({ keyWord: this.keyWord }).then(res => {
           this.staffVacateData = [];
           if (res.data.result !== null) {
             this.initData(res.data.result);
@@ -116,7 +118,7 @@ export default {
 
     // 重置数据
     resetData() {
-      this.code = null;
+      this.keyWord = null;
       this.getTableData();
     },
 
@@ -136,6 +138,11 @@ export default {
       updateStaffVacateInfoByCode(row).then(res => {
         this.getTableData();
       })
+    },
+
+    // 导出为表格
+    exportToExcel() {
+      getExcel('#selectTable', '表格');
     },
   },
 }

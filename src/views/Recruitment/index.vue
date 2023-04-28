@@ -4,10 +4,11 @@
     <!-- 顶部搜索框、发布按钮 -->
     <div class="header-panel">
       <div class="search-box">
-        <el-input v-model="keyWord" placeholder="请输入岗位名称"></el-input>
+        <el-input v-model="keyWord" placeholder="请输入关键词"></el-input>
         <el-button style="margin-left: 12px;" type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
         <el-button type="primary" plain @click="resetData()">重置</el-button>
         <el-button type="danger" plain @click="delJob(selectData)">批量删除</el-button>
+        <el-button plain @click="exportToExcel()">导出</el-button>
       </div>
       <div class="release">
         <el-button type="primary" @click="dialogVisible = true">发布</el-button>
@@ -51,7 +52,7 @@
     </el-dialog>
     <!-- 中部岗位列表 -->
     <div class="job-list-box">
-      <el-table ref="multipleTable" :data="jobList" tooltip-effect="dark" style="width: 100%"
+      <el-table id="selectTable" ref="multipleTable" :data="jobList" tooltip-effect="dark" style="width: 100%"
         @selection-change="handleSelectionChange" border>
         <el-table-column type="selection" width="55">
         </el-table-column>
@@ -91,6 +92,7 @@
 
 <script>
 import { getJobList, addJob, updateJobInfo, searchJobByKeyWord, del } from '@/api';
+import { getExcel } from '../../utils/exportsExcel';
 export default {
   name: 'recruitment',
   data() {
@@ -208,6 +210,11 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+
+    // 导出数据
+    exportToExcel() {
+      getExcel('#selectTable', '表格');
     },
   }
 }

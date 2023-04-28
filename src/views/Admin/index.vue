@@ -9,36 +9,37 @@
       - 给超级管理员查看其他管理员的信息并审核，主要操作有，查看详情、删除
     -->
     <div class="top-panel">
-      <el-input placeholder="仅支持工号查询" v-model="code"></el-input>
-      <el-button type="primary" icon="el-icon-search" @click="searchAdminByCode()">查找</el-button>
+      <el-input placeholder="输入关键词查询" v-model="keyWord"></el-input>
+      <el-button type="primary" icon="el-icon-search" @click="search()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
-    <el-table :data="tableData" border style="width: 100%">
+    <el-table id="selectTable" :data="tableData" border style="width: 100%">
       <el-table-column fixed prop="code" label="工号">
       </el-table-column>
       <el-table-column prop="name" label="姓名">
       </el-table-column>
-      <el-table-column prop="service_status" label="在职情况"
-        :filters="[{ text: '离职', value: 0 }, { text: '在职', value: 1 }]" :filter-method="filterServiceStatus"
-        filter-placement="bottom-end">
+      <el-table-column prop="service_status" label="在职情况" :filters="[{ text: '离职', value: 0 }, { text: '在职', value: 1 }]"
+        :filter-method="filterServiceStatus" filter-placement="bottom-end">
         <template slot-scope="scope">
           <el-tag :type="scope.row.service_status === 0 ? 'danger' : 'success'" disable-transitions>{{
             scope.row.service_status === 0 ? '离职' : '在职' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="apply_status" label="认证情况"
-        :filters="[{ text: '未认证', value: 0 }, { text: '已认证', value: 1 }]" :filter-method="filterApplyStatus"
-        filter-placement="bottom-end">
+      <el-table-column prop="apply_status" label="认证情况" :filters="[{ text: '未认证', value: 0 }, { text: '已认证', value: 1 }]"
+        :filter-method="filterApplyStatus" filter-placement="bottom-end">
         <template slot-scope="scope">
           <el-tag :type="scope.row.apply_status === 0 ? 'danger' : 'success'" disable-transitions>{{
             scope.row.apply_status === 0 ? '未认证' : '已认证' }}</el-tag>
         </template>>
       </el-table-column>
-      <el-table-column  prop="gender" label="性别">
+      <el-table-column prop="gender" label="性别" :filters="[{ text: '男', value: 1 }, { text: '女', value: 0 }]"
+        :filter-method="filterGender" filter-placement="bottom-end">
         <template slot-scope="scope">
-          <span>{{ scope.row.gender === 0 ? '女' : '男' }}</span>
-        </template>
-      </el-table-column >
+          <el-tag :type="scope.row.gender === 0 ? 'warning' : ''" disable-transitions>{{
+            scope.row.gender === 0 ? '女' : '男' }}</el-tag>
+        </template>>
+      </el-table-column>
       <el-table-column prop="age" label="年龄">
       </el-table-column>
       <el-table-column prop="phone" label="电话">
@@ -59,12 +60,13 @@
 </template>
 
 <script>
-import { getAdminList, updateAdminInfoById, deleteAdminById, getAdminInfoByCode } from '@/api';
+import { getAdminList, updateAdminInfoById, deleteAdminById, getAdminInfoByKeyWord } from '@/api';
+import { getExcel } from '../../utils/exportsExcel';
 export default {
   name: 'admin',
   data() {
     return {
-      code: '',  // 查找时输入的员工工号
+      keyWord: '',  // 查找时输入的员工工号
       tableData: [],
     }
   },
@@ -75,16 +77,23 @@ export default {
   },
   methods: {
 
+    // 导出为表格
+    exportToExcel() {
+      getExcel('#selectTable', '表格');
+    },
+
     // 根据管理员工号查找
-    searchAdminByCode() {
-      // console.log(this.code !== null);
-      if (this.code !== '') {
-        getAdminInfoByCode({ code: this.code }).then(res => {
+    search() {
+      // console.log(this.keyWord !== null);
+      if (this.keyWord !== '') {
+        getAdminInfoByKeyWord({ keyWord: this.keyWord }).then(res => {
+          console.log(res.data.result);
           console.log(res.data.result === null);
           this.tableData = [];
-          if (res.data.result !== null) {
-            this.tableData.push(res.data.result);
-          }
+          // if (res.data.result !== null) {
+          //   this.tableData.push(res.data.result);
+          // }
+          this.tableData = res.data.result;
           console.log(this.tableData);
         })
       }
@@ -92,7 +101,7 @@ export default {
 
     // 重置（重新获取数据）
     resetData() {
-      this.code = null;
+      this.keyWord = null;
       this.initData();
     },
     initData() {
@@ -111,6 +120,10 @@ export default {
     filterApplyStatus(value, row) {
       // console.log(value, row);
       return row.apply_status === value;
+    },
+
+    filterGender(value, row) {
+      return row.gender == value;
     },
 
     // 通过认证按钮

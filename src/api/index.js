@@ -69,9 +69,9 @@ export function deleteAdminById(data) {
 }
 
 // 根据管理员工号获取管理员信息
-export function getAdminInfoByCode(data) {
+export function getAdminInfoByKeyWord(data) {
   return axios({
-    url: '/api/admin/getInfoByCode',
+    url: '/api/admin/getAdminInfoByKeyWord',
     method: 'get',
     params: data,
   })
@@ -104,6 +104,15 @@ export function updateStaffInfo(data) {
   })
 }
 
+// 查找员工信息
+export function searchStaffInfoByKeyWord(data) {
+  return axios({
+    url: '/api/staff/search',
+    method: 'get',
+    params: data,
+  })
+}
+
 // 获取所有员工调岗记录
 export function getAllStaffJobRecord(data) {
   return axios({
@@ -114,9 +123,9 @@ export function getAllStaffJobRecord(data) {
 }
 
 // 通过员工工号查找员工的调岗信息
-export function getStaffJobInfoByCode(data) {
+export function getStaffJobInfoByKeyWord(data) {
   return axios({
-    url: '/api/job/getStaffJobInfoByCode',
+    url: '/api/job/getStaffJobInfoByKeyWord',
     method: 'get',
     params: data,
   })
@@ -138,9 +147,9 @@ export function getAllStaffDormitoryRecord(data) {
     params: data,
   });
 }
-export function getStaffDormitoryInfoByCode(data) {
+export function getStaffDormitoryInfoByKeyWord(data) {
   return axios({
-    url: '/api/dormitory/getStaffDormitoryInfoByCode',
+    url: '/api/dormitory/getStaffDormitoryInfoByKeyWord',
     method: 'get',
     params: data,
   });
@@ -162,9 +171,9 @@ export function getAllStaffDepartmentRecord(data) {
   })
 } 
 
-export function getStaffDepartmentInfoByCode(data) {
+export function getStaffDepartmentInfoByKeyWord(data) {
   return axios({
-    url: '/api/department/getStaffDepartmentInfoByCode',
+    url: '/api/department/getStaffDepartmentInfoByKeyWord',
     method: 'get',
     params: data,
   })
@@ -198,7 +207,7 @@ export function getStaffInfo(data) {
 
 export function getStaffLeaveInfoByCode(data) {
   return axios({
-    url: '/api/leave/getStaffLeaveInfoByCode',
+    url: '/api/leave/getStaffLeaveInfoByKeyWord',
     method: 'get',
     params: data,
   })
@@ -229,9 +238,9 @@ export function getAllStaffVacateRecord(data) {
     params: data,
   })
 }
-export function getStaffVacateInfoByCode(data) {
+export function getStaffVacateInfoByKeyWord(data) {
   return axios({
-    url: '/api/vacate/getStaffVacateInfoByCode',
+    url: '/api/vacate/search',
     method: 'get',
     params: data,
   })
@@ -249,6 +258,14 @@ export function updateStaffVacateInfoByCode(data) {
 export function getAllStaffAttendanceRecord(data) {
   return axios({
     url: '/api/attendance/getAllStaffAttendanceRecord',
+    method: 'get',
+    params: data,
+  })
+}
+
+export function searchAttendanceInfoByKeyWord(data) {
+  return axios({
+    url: '/api/attendance/search',
     method: 'get',
     params: data,
   })

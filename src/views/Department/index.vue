@@ -1,11 +1,12 @@
 <template>
   <div class="department-page">
     <div class="top-panel">
-      <el-input placeholder="仅支持工号查询" v-model="code"></el-input>
-      <el-button type="primary" icon="el-icon-search" @click="searchStaffByCode()">查找</el-button>
+      <el-input placeholder="输入关键词查询" v-model="keyWord"></el-input>
+      <el-button type="primary" icon="el-icon-search" @click="search()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
-    <el-table :data="staffDepartmentData" border style="width: 100%">
+    <el-table id="selectTable" :data="staffDepartmentData" border style="width: 100%">
       <el-table-column fixed prop="code" label="工号">
       </el-table-column>
       <el-table-column prop="name" label="姓名">
@@ -40,12 +41,13 @@
 
 <script>
 import { getAllStaffDepartmentRecord, getStaffDepartmentInfoByCode, updateStaffDepartmentInfoByCode } from '@/api';
+import { getExcel } from '../../utils/exportsExcel';
 import dayjs from 'dayjs';
 export default {
   name: 'department',
   data() {
     return {
-      code: null,
+      keyWord: null,
       staffDepartmentData: [],
     }
   },
@@ -99,11 +101,11 @@ export default {
       return row.status === value;
     },
     // 通过员工工号查找员工调岗信息
-    searchStaffByCode() {
-      if (this.code === '' || this.code === null) {
+    search() {
+      if (this.keyWord === '' || this.keyWord === null) {
         return;
       } else {
-        getStaffDepartmentInfoByCode({ code: this.code }).then(res => {
+        getStaffDepartmentInfoByKeyWord({ keyWord: this.keyWord }).then(res => {
           this.staffDepartmentData = [];
           if (res.data.result !== null) {
             this.initData(res.data.result);
@@ -115,7 +117,7 @@ export default {
 
     // 重置数据
     resetData() {
-      this.code = null;
+      this.keyWord = null;
       this.getTableData();
     },
 
@@ -135,6 +137,11 @@ export default {
       updateStaffDepartmentInfoByCode(row).then(res => {
         this.getTableData();
       })
+    },
+
+    // 导出为表格
+    exportToExcel() {
+      getExcel('#selectTable', '表格');
     },
   }
 }

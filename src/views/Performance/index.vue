@@ -1,15 +1,16 @@
 <template>
   <div class="performance-page">
-    <div class="header-panel">
-      <el-input placeholder="仅支持工号查找" v-model="code"></el-input>
+    <div class="top-panel">
+      <el-input placeholder="输入关键词查询" v-model="keyWord"></el-input>
       <!-- 按月查找 -->
       <el-date-picker v-model="date" type="month" placeholder="选择月">
       </el-date-picker>
       <el-button type="primary" icon="el-icon-search" @click="search()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
     <div class="table-data">
-      <el-table border :data="rows">
+      <el-table id="selectTable" border :data="rows">
         <el-table-column fixed prop="code" label="工号">
         </el-table-column>
         <el-table-column prop="name" label="姓名">
@@ -57,16 +58,19 @@
           <el-form-item label="基本工资">
             <span>{{ item ? item.basic_salary : '' }}</span>
           </el-form-item>
+          <el-row>
+            <span>绩效工资说明：绩效 A 奖励基本工资的30%， 绩效 B 奖励基本工资的20%，绩效 C 奖励解百纳工资的 10%</span>
+          </el-row>
           <el-form-item label="绩效">
             <el-radio v-model="formLabelAlign.performance" label="A">A</el-radio>
             <el-radio v-model="formLabelAlign.performance" label="B">B</el-radio>
             <el-radio v-model="formLabelAlign.performance" label="C">C</el-radio>
           </el-form-item>
           <el-form-item label="奖惩">
-            <el-input type="textarea" placeholder="输入员工的奖励或者惩罚" v-model="formLabelAlign.reward"></el-input>
+            <el-input :value="formLabelAlign.reward" type="textarea" placeholder="输入员工本月所获得的奖励或处罚" v-model="formLabelAlign.reward"></el-input>
           </el-form-item>
           <el-form-item label="奖惩工资">
-            <el-input type="number" placeholder="输入员工奖惩对应的工资，只能输入数字" v-model="formLabelAlign.reward_salary"></el-input>
+            <el-input :value="formLabelAlign.reward_salary" type="number" placeholder="输入员工奖惩对应的工资，只能输入数字" v-model="formLabelAlign.reward_salary"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -80,6 +84,7 @@
 
 <script>
 import { getStaffPerformance, updateStaffPerformance, searchPerformance } from '@/api';
+import { getExcel } from '../../utils/exportsExcel';
 
 export default {
   name: 'performance',
@@ -87,7 +92,7 @@ export default {
     return {
       rows: [],
       count: 0,
-      code: null,
+      keyWord: null,
       date: null,
       dialogVisible: false,
       formLabelAlign: {
@@ -113,7 +118,7 @@ export default {
 
     // 查找员工数据
     search() {
-      // if (this.code == null ||) {
+      // if (this.keyWord == null ||) {
       //   this.$message('请输入查找信息');
       //   return;
       // }
@@ -124,7 +129,7 @@ export default {
         month = new Date(this.date + '').getMonth() + 1;
       }
       const data = {
-        code: this.code,
+        keyWord: this.keyWord,
         year,
         month,
       }
@@ -136,7 +141,7 @@ export default {
     },
     // 重置数据
     resetData() {
-      this.code = null;
+      this.keyWord = null;
       this.date = null;
       this.getStaffPerformance();
     },
@@ -154,6 +159,14 @@ export default {
       console.log(item);
       this.dialogVisible = true;
       this.item = JSON.parse(JSON.stringify(item));
+      this.formLabelAlign.performance = item.performance;
+      this.formLabelAlign.reward = item.reward;
+      this.formLabelAlign.reward_salary = item.reward_salary;
+    },
+
+    // 导出为表格
+    exportToExcel() {
+      getExcel('#selectTable', '表格');
     },
 
     // 提交修改
@@ -165,15 +178,18 @@ export default {
       item.reward_salary = this.formLabelAlign.reward_salary * 1;
       switch (item.performance) {
         case 'A': {
-          item.real_salary = item.basic_salary * 1 + 2500 + item.reward_salary;
+          item.performance_salary = (item.basic_salary * 1 * 0.3)
+          item.real_salary = (item.basic_salary * 1 * 0.3) + item.reward_salary + item.basic_salary * 1;
           break;
         }
         case 'B': {
-          item.real_salary = item.basic_salary * 1 + 1500 + item.reward_salary;
+          item.performance_salary = (item.basic_salary * 1 * 0.2)
+          item.real_salary =  (item.basic_salary * 1 * 0.2) + item.reward_salary + item.basic_salary * 1;
           break;
         }
         case 'C': {
-          item.real_salary = item.basic_salary * 1 + item.reward_salary;
+          item.performance_salary = (item.basic_salary * 1 * 0.1)
+          item.real_salary = (item.basic_salary * 1 * 0.1) + item.reward_salary + item.basic_salary * 1;
           break;
         }
       }
@@ -189,7 +205,7 @@ export default {
 </script>
 
 <style lang="less">
-.header-panel {
+.top-panel {
   width: 100%;
   // height: 80px;
   line-height: 60px;
