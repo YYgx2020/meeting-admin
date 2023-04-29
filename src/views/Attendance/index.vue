@@ -4,9 +4,13 @@
       <el-input placeholder="输入关键词查询" v-model="keyWord"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchAttendanceInfoByKeyWord()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button type="danger" plain @click="del(selectData)">批量删除</el-button>
       <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
-    <el-table id="selectTable" :data="staffAttendanceData" border style="width: 100%">
+    <el-table id="selectTable" :data="staffAttendanceData" border style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55">
+      </el-table-column>
       <el-table-column prop="code" label="工号">
       </el-table-column>
       <el-table-column prop="name" label="姓名">
@@ -23,12 +27,17 @@
       </el-table-column>
       <el-table-column prop="on_work_time" label="总工时">
       </el-table-column>
+      <el-table-column label="操作">
+        <template slot-scope="scope">
+          <el-button type="text" style="color: #f56c6c;" @click="del(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
-import { getAllStaffAttendanceRecord, searchAttendanceInfoByKeyWord } from '@/api';
+import { getAllStaffAttendanceRecord, searchAttendanceInfoByKeyWord, delAttendance } from '@/api';
 import { getExcel } from '../../utils/exportsExcel';
 
 export default {
@@ -37,6 +46,7 @@ export default {
     return {
       keyWord: null,
       staffAttendanceData: [],
+      selectData: [],
     }
   },
   created() {
@@ -44,6 +54,39 @@ export default {
   },
 
   methods: {
+
+    // 监听选中行事件
+    handleSelectionChange(e) {
+      console.log(e);
+      this.selectData = e;
+    },
+
+    // 删除事件
+    del(item) {
+      if (item instanceof Array) {
+        if (item.length == 0) return;
+      }
+      this.$confirm('此操作将永久删除该员工当天的考勤信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delAttendance(item).then(res => {
+          console.log(res);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          this.getTableData();
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+
     getTableData() {
       getAllStaffAttendanceRecord().then(res => {
         console.log(res);

@@ -4,9 +4,12 @@
       <el-input placeholder="输入关键词查询" v-model="code"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="searchStaffByCode()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button type="danger" plain @click="del(selectData)">批量删除</el-button>
       <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
-    <el-table id="selectTable" :data="staffLeaveData" border style="width: 100%">
+    <el-table id="selectTable" :data="staffLeaveData" border style="width: 100%" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55">
+      </el-table-column>
       <el-table-column fixed prop="code" label="工号">
       </el-table-column>
       <el-table-column prop="name" label="姓名">
@@ -46,6 +49,8 @@
             @click="preview(scope.row)">预览</el-button>
           <el-button type="text" size="small" v-if="scope.row.status === 0 || scope.row.status === 2"
             style="color: #f56c6c;" @click="noPass(scope.row)">不通过</el-button>
+            <el-button type="text" style="color: #f56c6c;" @click="del(scope.row)">删除</el-button>
+          
         </template>
       </el-table-column>
     </el-table>
@@ -123,7 +128,7 @@
 </template>
 
 <script>
-import { getStaffInfo, getAllStaffLeaveRecord, getStaffLeaveInfoByCode, updateStaffLeaveInfoByCode, passStaffLeave } from '@/api';
+import { getStaffInfo, getAllStaffLeaveRecord, getStaffLeaveInfoByCode, updateStaffLeaveInfoByCode, passStaffLeave, leaveDel } from '@/api';
 import dayjs from 'dayjs';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -147,6 +152,7 @@ export default {
       signatureImg: '',
       previewData: {},
       staffSignatureImg: null,  // 乙方签字图片
+      selectData: [],
       staff_signature_date: null,  // 乙方签字日期
     }
   },
@@ -162,6 +168,39 @@ export default {
   // },
 
   methods: {
+
+    // 监听选中行事件
+    handleSelectionChange(e) {
+      console.log(e);
+      this.selectData = e;
+    },
+
+    // 删除事件
+    del(item) {
+      if (item instanceof Array) {
+        if (item.length == 0) return;
+      }
+      this.$confirm('此操作将永久删除该员工的离职申请记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        leaveDel(item).then(res => {
+          console.log(res);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          this.getTableData();
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+
     getTableData() {
       this.dialogVisible = false;
       getAllStaffLeaveRecord().then(res => {

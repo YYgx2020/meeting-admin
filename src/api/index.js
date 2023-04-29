@@ -86,6 +86,14 @@ export function changePassword(data) {
   })
 }
 
+export function delAdmin(data) {
+  return axios({
+    url: "/api/admin/del",
+    method: "post",
+    data,
+  });
+}
+
 // 获取员工信息
 export function getStaffList(data) {
   return axios({
@@ -110,6 +118,14 @@ export function searchStaffInfoByKeyWord(data) {
     url: '/api/staff/search',
     method: 'get',
     params: data,
+  })
+}
+
+export function delStaff(data) {
+  return axios({
+    url: '/api/staff/del',
+    method: 'post',
+    data,
   })
 }
 
@@ -139,6 +155,14 @@ export function updateStaffJobInfoByCode(data) {
   })
 }
 
+export function jobDel(data) {
+  return axios({
+    url: '/api/job/del',
+    method: 'post',
+    data,
+  })
+}
+
 // 更新员工宿舍信息
 export function getAllStaffDormitoryRecord(data) {
   return axios({
@@ -157,6 +181,14 @@ export function getStaffDormitoryInfoByKeyWord(data) {
 export function updateStaffDormitoryInfoByCode(data) {
   return axios({
     url: '/api/dormitory/updateStaffDormitoryInfoByCode',
+    method: 'post',
+    data,
+  });
+}
+
+export function dormitoryDel(data) {
+  return axios({
+    url: '/api/dormitory/del',
     method: 'post',
     data,
   });
@@ -182,6 +214,14 @@ export function getStaffDepartmentInfoByKeyWord(data) {
 export function updateStaffDepartmentInfoByCode(data) {
   return axios({
     url: '/api/department/updateStaffDepartmentInfoByCode',
+    method: 'post',
+    data,
+  })
+}
+
+export function departmentDel(data) {
+  return axios({
+    url: '/api/department/del',
     method: 'post',
     data,
   })
@@ -230,6 +270,14 @@ export function passStaffLeave(data) {
   })
 }
 
+export function leaveDel(data) {
+  return axios({
+    url: '/api/leave/del',
+    method: 'post',
+    data,
+  })
+}
+
 // 请假相关
 export function getAllStaffVacateRecord(data) {
   return axios({
@@ -253,6 +301,14 @@ export function updateStaffVacateInfoByCode(data) {
   })
 }
 
+export function delVacate(data) {
+  return axios({
+    url: '/api/vacate/del',
+    method: 'post',
+    data,
+  })
+}
+
 
 // 考勤相关
 export function getAllStaffAttendanceRecord(data) {
@@ -268,6 +324,14 @@ export function searchAttendanceInfoByKeyWord(data) {
     url: '/api/attendance/search',
     method: 'get',
     params: data,
+  })
+}
+
+export function delAttendance(data) {
+  return axios({
+    url: '/api/attendance/del',
+    method: 'post',
+    data,
   })
 }
 
@@ -394,5 +458,14 @@ export function searchPerformance(data) {
     url: '/api/performance/search',
     method: 'get',
     params: data,
+  })
+}
+
+// 删除员工绩效信息
+export function performanceDel(data) {
+  return axios({
+    url: '/api/performance/del',
+    method: 'post',
+    data,
   })
 }

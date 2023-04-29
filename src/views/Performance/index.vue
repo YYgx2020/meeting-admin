@@ -7,11 +7,14 @@
       </el-date-picker>
       <el-button type="primary" icon="el-icon-search" @click="search()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button type="danger" plain @click="del(selectData)">批量删除</el-button>
       <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
     <div class="table-data">
-      <el-table id="selectTable" border :data="rows">
-        <el-table-column fixed prop="code" label="工号">
+      <el-table id="selectTable" border :data="rows" tooltip-effect="dark" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55">
+        </el-table-column>
+        <el-table-column prop="code" label="工号">
         </el-table-column>
         <el-table-column prop="name" label="姓名">
         </el-table-column>
@@ -35,6 +38,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="edit(scope.row)">编辑</el-button>
+            <el-button type="text" style="color: #f56c6c;" @click="del(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,6 +76,9 @@
           <el-form-item label="奖惩工资">
             <el-input :value="formLabelAlign.reward_salary" type="number" placeholder="输入员工奖惩对应的工资，只能输入数字" v-model="formLabelAlign.reward_salary"></el-input>
           </el-form-item>
+          <el-row>
+            <span>员工的实发工资=基本工资+绩效工资+奖惩工资</span>
+          </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false">取 消</el-button>
@@ -83,7 +90,7 @@
 </template>
 
 <script>
-import { getStaffPerformance, updateStaffPerformance, searchPerformance } from '@/api';
+import { getStaffPerformance, updateStaffPerformance, searchPerformance, performanceDel } from '@/api';
 import { getExcel } from '../../utils/exportsExcel';
 
 export default {
@@ -101,6 +108,7 @@ export default {
         reward_salary: null,
       },
       item: null,  // 标记当前选中的行
+      selectData: [],
     }
   },
   created() {
@@ -115,6 +123,38 @@ export default {
   //   deep:true
   // },
   methods: {
+
+    // 监听选中行事件
+    handleSelectionChange(e) {
+      console.log(e);
+      this.selectData = e;
+    },
+
+    // 删除事件
+    del(item) {
+      if (item instanceof Array) {
+        if (item.length == 0) return;
+      }
+      this.$confirm('此操作将永久删除该员工当月的绩效信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        performanceDel(item).then(res => {
+          console.log(res);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          this.getStaffPerformance();
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
 
     // 查找员工数据
     search() {

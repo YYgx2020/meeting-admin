@@ -12,9 +12,12 @@
       <el-input placeholder="输入关键词查询" v-model="keyWord"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="search()">查找</el-button>
       <el-button type="primary" plain @click="resetData()">重置</el-button>
+      <el-button type="danger" plain @click="del(selectData)">批量删除</el-button>
       <el-button plain @click="exportToExcel()">导出</el-button>
     </div>
-    <el-table id="selectTable" :data="tableData" border style="width: 100%">
+    <el-table id="selectTable" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55">
+      </el-table-column>
       <el-table-column fixed prop="code" label="工号">
       </el-table-column>
       <el-table-column prop="name" label="姓名">
@@ -52,7 +55,7 @@
         <template slot-scope="scope">
           <!-- <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button> -->
           <el-button type="text" size="small" v-if="!scope.row.apply_status" @click="pass(scope.row)">通过认证</el-button>
-          <el-button type="text" size="small" style="color: #f56c6c;" @click="deleteAdmin(scope.row)">删除</el-button>
+          <el-button type="text" size="small" style="color: #f56c6c;" @click="del(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -60,13 +63,14 @@
 </template>
 
 <script>
-import { getAdminList, updateAdminInfoById, deleteAdminById, getAdminInfoByKeyWord } from '@/api';
+import { getAdminList, updateAdminInfoById, deleteAdminById, getAdminInfoByKeyWord, delAdmin } from '@/api';
 import { getExcel } from '../../utils/exportsExcel';
 export default {
   name: 'admin',
   data() {
     return {
       keyWord: '',  // 查找时输入的员工工号
+      selectData: [],
       tableData: [],
     }
   },
@@ -76,6 +80,37 @@ export default {
     this.initData();
   },
   methods: {
+    // 监听选中行事件
+    handleSelectionChange(e) {
+      console.log(e);
+      this.selectData = e;
+    },
+
+    // 删除事件
+    del(item) {
+      if (item instanceof Array) {
+        if (item.length == 0) return;
+      }
+      this.$confirm('此操作将永久删除该管理员账号, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delAdmin(item).then(res => {
+          console.log(res);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          this.initData();
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
 
     // 导出为表格
     exportToExcel() {
