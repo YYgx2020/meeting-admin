@@ -335,6 +335,14 @@ export function delAttendance(data) {
   })
 }
 
+export function updateStaffAttendanceInfo(data) {
+  return axios({
+    url: '/api/attendance/updateStaffAttendanceInfo',
+    method: 'post',
+    data,
+  })
+}
+
 
 // 新闻管理相关接口
 export function addArticle(data) {
