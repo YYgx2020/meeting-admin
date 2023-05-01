@@ -10,7 +10,6 @@ import axios from "axios";
 import store from "./store";
 import dayjs from 'dayjs';
 import echarts from 'echarts';
-import vueEsign from 'vue-esign'
 import "element-ui/lib/theme-chalk/index.css";
 
 Vue.prototype.dayjs = dayjs;
@@ -19,7 +18,6 @@ Vue.prototype.$axios = axios; // 将axios绑定到vue的原型上
 Vue.prototype.$echarts = echarts;
 
 Vue.use(ElementUI);
-Vue.use(vueEsign)
 
 new Vue({
   router,

@@ -92,7 +92,7 @@
 
 <script>
 import Cookie from 'js-cookie';
-import { put } from '@/utils/alioss';
+// import { put } from '@/utils/alioss';
 import { updateAdminInfoById, getVerifyCode, changePassword } from '@/api';
 import { Notification } from 'element-ui';
 export default {
@@ -173,13 +173,13 @@ export default {
         background: 'rgba(0, 0, 0, 0.7)'
       });
       // 调用 ali-oss 中的方法
-      put(fileName, option.file).then(res => {
-        console.log(res)
-        loading.close();
-        this.formLabelAlign.avatar = res.url;
-      }).catch(err => {
-        loading.close();
-      })
+      // put(fileName, option.file).then(res => {
+      //   console.log(res)
+      //   loading.close();
+      //   this.formLabelAlign.avatar = res.url;
+      // }).catch(err => {
+      //   loading.close();
+      // })
     },
 
     // 发送验证码
