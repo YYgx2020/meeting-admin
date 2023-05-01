@@ -3,7 +3,7 @@
     <!-- 标题 -->
     <div class="login-panel">
       <div class="title">
-        <h1>小型公司人资管理系统</h1>
+        <h1>电子病历系统</h1>
       </div>
       <div class="login-box" v-if="show">
         <h3 class="title-tip">欢迎登录</h3>
@@ -26,9 +26,9 @@
         </div>
         <el-button :loading="loading" type="primary" round @click="loginEvent(formLabelAlign)">{{ loading ? '正在登录中...' :
           '登录' }}</el-button>
-        <div class="register-panel">
+        <!-- <div class="register-panel">
           <el-button round @click="registerEvent()">申请账号</el-button>
-        </div>
+        </div> -->
       </div>
       <!-- 重置密码 -->
       <div class="reset-pwd-box" v-if="!show">
@@ -141,7 +141,7 @@ export default {
   methods: {
     // 切换注册组件
     changeResetPwd() {
-      this.show = !this.show;
+      // this.show = !this.show;
     },
     // 登录处理事件
     loginEvent(formLabelAlign) {
@@ -156,37 +156,41 @@ export default {
         }
       }
       this.loading = true;
-      login(loginForm)
-        .then((res) => {
-          this.loading = false;
-          console.log(res);
-          // 跳转到首页去，把登录信息保存到存储中
-          const { userInfo } = res.data.result
-          if (this.checked) {
-            // 1. 将 token 和用户基本信息保存到 localStorage 和 cookie 中
-            // localStorage.setItem("yg_l_token", res.data.result.token)
-            // localStorage.setItem("userInfo", JSON.stringify(userInfo))
-            // 设置 cookie 5分钟后过期
-            Cookies.set('hrms_token', res.data.result.token, {
-              expires: expire_time
-            })
-            Cookies.set('userInfo', JSON.stringify(userInfo), {
-              expires: expire_time
-            })
-          } else {
-            console.log('不设置过期时间');
-            // 不设置过期时间，浏览器一旦关闭，cookie 就会被清除
-            Cookies.set('hrms_token', res.data.result.token)
-            Cookies.set('userInfo', JSON.stringify(userInfo))
-          }
-          this.$router.replace({
-            name: 'home',
-          })
-        })
-        .catch((err) => {
-          this.loading = false;
-          console.log(err);
-        });
+      this.$router.replace({
+        name: 'home',
+      }).catch(() =>{})
+      this.loading = false;
+      // login(loginForm)
+      //   .then((res) => {
+      //     this.loading = false;
+      //     console.log(res);
+      //     // 跳转到首页去，把登录信息保存到存储中
+      //     const { userInfo } = res.data.result
+      //     if (this.checked) {
+      //       // 1. 将 token 和用户基本信息保存到 localStorage 和 cookie 中
+      //       // localStorage.setItem("yg_l_token", res.data.result.token)
+      //       // localStorage.setItem("userInfo", JSON.stringify(userInfo))
+      //       // 设置 cookie 5分钟后过期
+      //       Cookies.set('hrms_token', res.data.result.token, {
+      //         expires: expire_time
+      //       })
+      //       Cookies.set('userInfo', JSON.stringify(userInfo), {
+      //         expires: expire_time
+      //       })
+      //     } else {
+      //       console.log('不设置过期时间');
+      //       // 不设置过期时间，浏览器一旦关闭，cookie 就会被清除
+      //       Cookies.set('hrms_token', res.data.result.token)
+      //       Cookies.set('userInfo', JSON.stringify(userInfo))
+      //     }
+      //     this.$router.replace({
+      //       name: 'home',
+      //     })
+      //   })
+      //   .catch((err) => {
+      //   this.loading = false;
+      //   console.log(err);
+      // });
     },
 
     // 切换注册组件

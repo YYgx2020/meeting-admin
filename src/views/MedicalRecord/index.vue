@@ -1,17 +1,17 @@
 <template>
-  <div class="staff-page">
-    <h3>员工管理页面，展示员工数据</h3>
+  <div id="medical-record">
+    <h1>用户病历信息查看</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'staff',
+  name: 'MedicalRecord',
   data() {
     return {
       
     }
-  }
+  },
 }
 </script>
 

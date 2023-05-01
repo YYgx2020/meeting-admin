@@ -25,7 +25,8 @@
       </div>
       <!-- <el-button slot="reference">删除</el-button> -->
       <div slot="reference" class="avatar" @click="clickAvatarEvent()">
-        <img :src="adminInfo.avatar" alt="">
+        <!-- <img :src="avatar" alt=""> -->
+        <img src="../../assets/images/avatar.png" alt="">
       </div>
     </el-popover>
     <!-- 修改信息弹窗 -->
@@ -124,6 +125,7 @@ export default {
       },
       canSendCode: false, // 设置是否可以发送验证码
       captchaTime: 60, // 验证码倒计时
+      avatar: '../../assets/images/avatar.png',
     }
   },
   created() {
