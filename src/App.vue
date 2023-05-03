@@ -56,4 +56,20 @@ li {
     }
   }
 }
+
+.top-panel {
+  width: 100%;
+  // height: 80px;
+  line-height: 60px;
+
+  display: flex;
+  .el-input {
+    width: 180px;
+    margin-right: 12px;
+  }
+
+  .top-item {
+    margin-right: 16px;
+  }
+}
 </style>

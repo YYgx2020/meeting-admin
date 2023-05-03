@@ -130,14 +130,14 @@ export default {
   },
   created() {
     // 获取用户信息
-    console.log(JSON.parse(Cookie.get('userInfo')));
-    this.adminInfo = JSON.parse(Cookie.get('userInfo'));
-    this.formLabelAlign = { ...this.adminInfo };
+    // console.log(JSON.parse(Cookie.get('userInfo')));
+    // this.adminInfo = JSON.parse(Cookie.get('userInfo'));
+    // this.formLabelAlign = { ...this.adminInfo };
     // this.resetPwdForm = { ...this.adminInfo };
     // this.resetPwdForm.verifyCode = null;
-    this.resetPwdForm.code = this.adminInfo.code;
-    this.resetPwdForm.password = this.adminInfo.password; // 保存旧密码到密码框中。如果用户没有密码框
-    this.resetPwdForm.email = this.adminInfo.email; // 保存旧邮箱到密码框中。如果用户有邮箱框，
+    // this.resetPwdForm.code = this.adminInfo.code;
+    // this.resetPwdForm.password = this.adminInfo.password; // 保存旧密码到密码框中。如果用户没有密码框
+    // this.resetPwdForm.email = this.adminInfo.email; // 保存旧邮箱到密码框中。如果用户有邮箱框，
   },
   methods: {
     clickAvatarEvent() {

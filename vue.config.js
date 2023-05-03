@@ -14,13 +14,13 @@ module.exports = defineConfig({
     port: "8085",
     proxy: {
       // 配置跨域
-      "/api": {
+      "/dev-api": {
         target: process.env.VUE_APP_URL, //请求接口域名
         ws: true,
         // secure: false,
         changOrigin: true, //是否允许跨越
         pathRewrite: {
-          "^/api": "/api",
+          "^/dev-api": "/dev-api",
         },
       },
     },

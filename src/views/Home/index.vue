@@ -45,9 +45,9 @@ export default {
   },
   created() {
     // 获取用户信息
-    console.log(JSON.parse(Cookie.get('userInfo')));
-    const adminInfo = JSON.parse(Cookie.get('userInfo'));
-    this.$store.commit("saveAdminInfo", adminInfo);
+    // console.log(JSON.parse(Cookie.get('userInfo')));
+    // const adminInfo = JSON.parse(Cookie.get('userInfo'));
+    // this.$store.commit("saveAdminInfo", adminInfo);
   }
 }
 </script>

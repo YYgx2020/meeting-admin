@@ -9,13 +9,27 @@
     <el-menu :router='true' :default-active="path" class="el-menu-vertical-demo" background-color="#304156"
       text-color="#fff" active-text-color="#409EFF">
       <div v-for="(item, index) in menus" :key="index + ''">
-        <el-menu-item :index="item.path">
+        <el-menu-item :index="item.path" v-if="index !== menus.length - 1">
           <i :class="item.icon" class="icon"></i>
           <span slot="title">{{ item.meta.title }}
           </span>
         </el-menu-item>
       </div>
+      <!-- <el-submenu index="1">
+        <template slot="title">
+          <i class="iconfont icon-shenpi icon"></i>
+          <span>审批管理</span>
+        </template>
+        <div v-for="(item, index) in menus[menus.length - 1].children" :key="index + ''">
+          <el-menu-item :index="item.path" v-if="item.meta.show">
+            <i :class="item.icon" class="icon"></i>
+            <span slot="title">{{ item.meta.title }}
+            </span>
+          </el-menu-item>
+        </div>
+      </el-submenu> -->
     </el-menu>
+
   </div>
 </template>
 
@@ -46,6 +60,7 @@ export default {
 
 #Menu {
   height: calc(100vh - 60px);
+
   // width: 120px;
   .icon {
     padding-right: 10px;

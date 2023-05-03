@@ -37,15 +37,6 @@ const routes = [
       index: 3,
     },
     children: [
-      // {
-      //   path: "/home/databoard",
-      //   name: "databoard",
-      //   icon: "iconfont icon-shouye-shouye",
-      //   component: () => import("@/views/Databoard"),
-      //   meta: {
-      //     title: "首页",
-      //   },
-      // },
       {
         path: "/home/medicalRecord",
         name: "MedicalRecord",
@@ -64,8 +55,67 @@ const routes = [
           title: "机构查看",
         },
       },
-      
+      {
+        path: "/home/orgforadmin",
+        props: true,
+        name: "orgforadmin",
+        icon: "iconfont icon-jigou",
+        component: () => import("@/views/OrgforAdmin"),
+        meta: {
+          title: "机构查看（管理员）",
+        },
+      },
+      {
+        path: "/home/department/:id",
+        props: true,
+        name: "department",
+        icon: "iconfont icon-jigou",
+        component: () => import("@/views/Department"),
+        meta: {
+          title: "查看科室",
+        },
+      },
+      // {
+      //   path: "/home/organizationinfo",
+      //   name: "organizationInfo",
+      //   icon: "iconfont icon-jigou",
+      //   component: () => import("@/views/OrganizationInfo"),
+      //   meta: {
+      //     title: "机构信息",
+      //   },
+      //   children: [
+      //     {
+      //       path: "/home/organization",
+      //       name: "organization",
+      //       icon: "iconfont icon-jigou",
+      //       component: () => import("@/views/Organization"),
+      //       meta: {
+      //         title: "机构查看",
+      //         show: true,
+      //       },
+      //     },
+      //     {
+      //       path: "/home/department",
+      //       name: "department",
+      //       icon: "iconfont icon-jigou",
+      //       component: () => import("@/views/Department"),
+      //       meta: {
+      //         title: "查看科室",
+      //         show: false,
+      //       },
+      //     },
+      //   ],
+      // },
     ],
+  },
+  {
+    path: "/home/department",
+    name: "department",
+    icon: "iconfont icon-jigou",
+    component: () => import("@/views/Department"),
+    meta: {
+      title: "查看科室",
+    },
   },
 ];
 
@@ -90,10 +140,10 @@ router.beforeEach((to, from, next) => {
   //   // 跳转到 home 页面
   //   next("home");
   //   // next();
-  // } else 
-  if (to.name === 'login' || to.name === 'register') {
+  // } else
+  if (to.name === "login" || to.name === "register") {
     next();
-  } 
+  }
   next();
   // else if (!userInfo) {
   //   console.log('跳转到登录页面');
