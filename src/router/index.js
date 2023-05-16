@@ -30,7 +30,7 @@ const routes = [
     path: "/home",
     name: "home",
     // redirect: "/home/databoard",
-    redirect: "/home/medicalRecord",
+    redirect: "/home/organization",
     component: () => import("@/views/Home"),
     meta: {
       title: "首页",
@@ -38,84 +38,33 @@ const routes = [
     },
     children: [
       {
-        path: "/home/medicalRecord",
-        name: "MedicalRecord",
-        icon: "iconfont icon-bingli",
-        component: () => import("@/views/MedicalRecord"),
-        meta: {
-          title: "病历查看",
-        },
-      },
-      {
         path: "/home/organization",
         name: "organization",
         icon: "iconfont icon-jigou",
         component: () => import("@/views/Organization"),
         meta: {
-          title: "机构查看",
+          title: "机构管理",
         },
       },
       {
-        path: "/home/orgforadmin",
-        props: true,
-        name: "orgforadmin",
+        path: "/home/meeting",
+        name: "meeting",
         icon: "iconfont icon-jigou",
-        component: () => import("@/views/OrgforAdmin"),
+        component: () => import("@/views/Meeting"),
         meta: {
-          title: "机构查看（管理员）",
+          title: "会议室管理",
         },
       },
       {
-        path: "/home/department/:id",
-        props: true,
-        name: "department",
+        path: "/home/user",
+        name: "user",
         icon: "iconfont icon-jigou",
-        component: () => import("@/views/Department"),
+        component: () => import("@/views/User"),
         meta: {
-          title: "查看科室",
+          title: "用户管理",
         },
       },
-      // {
-      //   path: "/home/organizationinfo",
-      //   name: "organizationInfo",
-      //   icon: "iconfont icon-jigou",
-      //   component: () => import("@/views/OrganizationInfo"),
-      //   meta: {
-      //     title: "机构信息",
-      //   },
-      //   children: [
-      //     {
-      //       path: "/home/organization",
-      //       name: "organization",
-      //       icon: "iconfont icon-jigou",
-      //       component: () => import("@/views/Organization"),
-      //       meta: {
-      //         title: "机构查看",
-      //         show: true,
-      //       },
-      //     },
-      //     {
-      //       path: "/home/department",
-      //       name: "department",
-      //       icon: "iconfont icon-jigou",
-      //       component: () => import("@/views/Department"),
-      //       meta: {
-      //         title: "查看科室",
-      //         show: false,
-      //       },
-      //     },
-      //   ],
-      // },
     ],
-  },
-  {
-    path: "/home/department",
-    name: "department",
-    icon: "iconfont icon-jigou",
-    component: () => import("@/views/Department"),
-    meta: {
-      title: "查看科室",
-    },
   },
 ];
 
@@ -167,7 +116,7 @@ router.afterEach((to, from) => {
   if (to.meta.title) {
     document.title = to.meta.title; //修改网页的title
   } else {
-    document.title = "电子病历系统";
+    document.title = "会议室预约管理系统";
   }
 });
 export default router;

@@ -9,8 +9,8 @@
     <el-menu :router='true' :default-active="path" class="el-menu-vertical-demo" background-color="#304156"
       text-color="#fff" active-text-color="#409EFF">
       <div v-for="(item, index) in menus" :key="index + ''">
-        <el-menu-item :index="item.path" v-if="index !== menus.length - 1">
-          <i :class="item.icon" class="icon"></i>
+        <el-menu-item :index="item.path">
+          <!-- <i :class="item.icon" class="icon"></i> -->
           <span slot="title">{{ item.meta.title }}
           </span>
         </el-menu-item>

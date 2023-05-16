@@ -3,7 +3,7 @@
     <el-container>
       <el-aside width="240px">
         <div class="logo">
-          <h4>电子病历系统</h4>
+          <h4>会议室预约管理系统</h4>
         </div>
         <Menu></Menu>
       </el-aside>

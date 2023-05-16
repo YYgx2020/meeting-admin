@@ -7,17 +7,13 @@
         <el-button type="primary" icon="el-icon-search" @click="searchOrganizationByKeyWord()">查找机构</el-button>
       </div>
       <div class="top-item">
-        <el-input placeholder="输入关键词查询" v-model="keyWord2"></el-input>
-        <el-button type="primary" icon="el-icon-search" @click="searchAddressByKeyWord()">查找地址</el-button>
-      </div>
-      <div class="top-item">
         <el-dropdown trigger="click" style="cursor: pointer;" @command="handleTypeSelect">
           <span class="el-dropdown-link">
             机构类型<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item :command="item.text" v-for="(item, index) in types" :key="index">{{ item.text
-            }}</el-dropdown-item>
+            <el-dropdown-item :command="item.text" v-for="(item, index) in types" :key="index">{{ item.text }}
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -26,19 +22,29 @@
       </div>
     </div>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="institute_name" label="机构名">
-      </el-table-column>
-      <el-table-column prop="address" label="地址">
-      </el-table-column>
-      <el-table-column prop="institute_type" label="机构类型" width="100" :filters="types" :filter-method="filterTag"
+      <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column prop="name" label="机构名"></el-table-column>
+      <el-table-column prop="type" label="机构类型" width="100" :filters="types" :filter-method="filterType"
         filter-placement="bottom-end">
         <template slot-scope="scope">
-          <el-tag type="success" disable-transitions>{{ scope.row.institute_type }}</el-tag>
+          <el-tag :type="scope.row.type === 1 ? 'warning': ''" disable-transitions>{{ scope.row.type == 1 ? '学校': '企业' }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column prop="admin" label="申请人" width="80"></el-table-column>
+      <el-table-column prop="phone" label="电话" width="120"></el-table-column>
+      <el-table-column prop="email" label="邮箱"></el-table-column>
+      <el-table-column prop="type" label="审核状态" width="100" :filters="types" :filter-method="filterIsPass"
+        filter-placement="bottom-end">
         <template slot-scope="scope">
-          <el-button @click="handleCheckDepartment(scope.row)" type="text" size="small">查看科室</el-button>
+          <el-tag :type="scope.row.statusColor" disable-transitions>{{ scope.row.status }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button @click="lookDetail(scope.row)" type="text" size="small">查看简介</el-button>
+          <el-button @click="pass(scope.row)" type="text" size="small">通过</el-button>
+          <el-button @click="noPass(scope.row)" style="color: #f56c6c;" type="text" size="small">不通过</el-button>
+          <el-button @click="del(scope.row)" style="color: #f56c6c;" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -48,6 +54,8 @@
 <script>
 import { organization } from '@/api';
 
+import orgList from '@/utils/data/organization.js';
+
 export default {
   name: "Organization",
   components: {},
@@ -56,54 +64,53 @@ export default {
       keyWord1: null,
       keyWord2: null,
       tableData: null,
-      types: null,
+      types: [
+        {
+          text: '学校',
+          value: 1,
+        },
+        {
+          text: '企业',
+          value: 2,
+        }
+      ],
       searchType: false,
-      data: {
-        cur: 1,
-        institute_name: null,
-        institute_type: null,
-        address: null,
-      }
     }
   },
   created() {
     // console.log(organization.getDataList(data));
-    this.getDataList();
-
-    organization.getOrganizationType().then(res => {
-      // console.log('机构类型：', res);
-      this.types = res.data.data;
-      this.types = this.types.map((item, index) => {
-        // console.log(item, index);
-        return {
-          text: item,
-          value: item
-        }
-      })
-    })
+    // this.getDataList();
+    this.initData();
   },
 
   methods: {
 
-    filterTag(value, row) {
+    initData() {
+      console.log(orgList);
+      this.tableData = orgList.map(item => {
+        if (item.isPass === 0) {
+          item.statusColor = 'info';
+          item.status = '待审核';
+        } else if (item.isPass === 1) {
+          item.statusColor = 'success';
+          item.status = '审核通过';
+        } else {
+          item.statusColor = 'danger';
+          item.status = '审核不通过';
+        }
+
+        return item;
+      })
+    },
+
+    filterType(value, row) {
       console.log(value, row);
       return row.institute_type === value;
-      // if (value === '民办') {
+    },
 
-      //   console.log(value);
-      //   return;
-      // }
-      // console.log(this.searchType);
-      // if (!this.searchType) {
-      //   const res = await organization.getDataList({
-      //     cur: this.cur,
-      //     institute_type: value,
-      //   })
-      //   console.log(res);
-      //   this.searchType = true;
-      //   console.log(this.searchType);
-      // }
-
+    filterIsPass(value, row) {
+      console.log(value, row);
+      return row.institute_type === value;
     },
 
     resetData() {

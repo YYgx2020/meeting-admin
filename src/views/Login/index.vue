@@ -1,64 +1,55 @@
 <template>
   <div id="Login">
+    <!-- logo -->
+    <div class="logo">
+      <!-- <img src="../../assets/img/guet_logo.png" alt=""> -->
+    </div>
     <!-- 标题 -->
-    <div class="login-panel">
-      <div class="title">
-        <h1>电子病历系统</h1>
-      </div>
-      <div class="login-box" v-if="show">
-        <h3 class="title-tip">欢迎登录</h3>
+    <div class="login_panel">
+      <h1>会议室预约管理系统</h1>
+      <div class="login_box">
+        <h3>欢迎登录</h3>
         <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules"
           ref="formLabelAlign">
-          <el-form-item label="账号" prop="code">
-            <el-input v-model="formLabelAlign.code" placeholder="请输入你的账号" maxlength="11"></el-input>
+          <el-form-item label="手机号" prop="phone">
+            <el-input v-model="formLabelAlign.phone" maxlength="11"></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
-            <el-input type="password" placeholder="请输入你的密码" v-model="formLabelAlign.password" maxlength="11"></el-input>
+            <el-input type="password" v-model="formLabelAlign.password" maxlength="11"></el-input>
           </el-form-item>
         </el-form>
-        <div style="margin-bottom: 22px">
-          <div>
-            <el-checkbox style="float: left" v-model="checked">记住我</el-checkbox>
-          </div>
-          <div style="float: right">
-            <el-link :underline="false" @click="changeResetPwd()">忘记密码？</el-link>
-          </div>
-        </div>
-        <el-button :loading="loading" type="primary" round @click="loginEvent(formLabelAlign)">{{ loading ? '正在登录中...' :
-          '登录' }}</el-button>
-        <!-- <div class="register-panel">
-          <el-button round @click="registerEvent()">申请账号</el-button>
-        </div> -->
-      </div>
-      <!-- 重置密码 -->
-      <div class="reset-pwd-box" v-if="!show">
-        <h3 class="title-tip">重置密码</h3>
-        <i class="el-icon-close icon" @click="cancelReset()"></i>
-        <el-form :label-position="labelPosition" label-width="80px" :model="resetPwdForm" :rules="rules">
-          <el-form-item label="账号" prop="code">
-            <el-input v-model="resetPwdForm.code" placeholder="请输入你的账号"></el-input>
-          </el-form-item>
-          <el-form-item label="密码" prop="password">
-            <el-input type="password" v-model="resetPwdForm.password" placeholder="请输入你的密码"></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码" prop="verifyPwd">
-            <el-input type="password" v-model="resetPwdForm.verifyPwd" placeholder="请确认你的密码"></el-input>
-          </el-form-item>
-          <el-form-item label="邮箱" prop="email">
-            <el-input v-model="resetPwdForm.email" placeholder="请输入你的邮箱"></el-input>
-          </el-form-item>
-          <el-row>
-            <el-input maxlength="6" placeholder="请输入验证码" v-model="resetPwdForm.verifyCode"></el-input>
-            <el-button :disabled="canSendCode" type="primary" @click="sendVerifyCode()">{{
-              canSendCode ? captchaTime + " 秒后重试" : "获取验证码"
-            }}</el-button>
-          </el-row>
-        </el-form>
-        <el-button style="margin-top: 22px;" type="primary" round @click="resetPwdEvent(resetPwdForm)"
-          :loading="resetLoading">{{ resetLoading ? '密码重置中...' : '重置密码' }}</el-button>
+        <el-row>
+          <el-link :underline="false">忘记密码？</el-link>
+        </el-row>
+        <el-button type="primary" round @click="loginEvent('formLabelAlign')">登录</el-button>
       </div>
     </div>
-    <div class="inner-header flex"></div>
+    <!-- 背景轮播图 -->
+    <el-carousel indicator-position="none" height="100vh" arrow="never">
+      <el-carousel-item v-for="(item, index) in cover" :key="index">
+        <img :src="item" alt="">
+        <!-- <img src="../../assets/img/1.jpg" alt=""> -->
+      </el-carousel-item>
+    </el-carousel>
+    <div class="inner-header flex">
+      <!-- <h1>简单的 CSS3 波浪效果</h1> -->
+    </div>
+    <!-- 主登录窗口 -->
+    <div>
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+          <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+      </svg>
+    </div>
+    <div class="space"></div>
   </div>
 </template>
 
@@ -71,71 +62,38 @@ export default {
   name: "Login",
   components: {},
   data() {
-    // 确认密码
-    const verifyPwd = (rule, value, callback) => {
-      if (value === null || value === '') {
-        callback(new Error("请再次输入密码"));
-      } else if (this.resetPwdForm.password !== value) {
-        callback(new Error("两次输入密码不一致!"));
-      } else {
-        callback();
-      }
-    };
-    // 验证邮箱是否正确
-    const checkEmail = (rule, value, callback) => {
-      if (value === null) {
-        callback(new Error("请输入您的邮箱"));
-      } else {
-        const reg =
-          /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/;
-        if (!reg.test(value)) {
-          callback(new Error("请输入正确的邮箱地址"));
-        }
-      }
-    };
     return {
-      show: true,
-      checked: false,
-      labelPosition: "left",
-      canSendCode: false, // 设置是否可以发送验证码
-      captchaTime: 60, // 验证码倒计时
-      loading: false,
-      resetLoading: false,
+      cover: [
+        require('../../assets/images/1.jpg'),
+        require('../../assets/images/2.jpg'),
+        require('../../assets/images/3.jpg'),
+        require('../../assets/images/4.jpg'),
+        require('../../assets/images/5.jpg'),
+      ],
+      labelPosition: 'left',
       formLabelAlign: {
-        code: "",
-        password: "",
-      },
-      resetPwdForm: {
-        code: '',
+        phone: '',
         password: '',
-        verifyPwd: '',
-        email: '',
-        verifyCode: '',
       },
       rules: {
-        code: [
+        phone: [
           {
-            required: true,
-            message: "请输入您的账号",
-            trigger: "blur",
+            required: true, message: '请输入电话号码', trigger: 'blur',
+          },
+          {
+            min: 11, max: 11, message: '请输入11位手机号码', trigger: 'blur'
+          },
+          {
+            pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+            message: '请输入正确的手机号码'
           },
         ],
         password: [
           {
-            required: true,
-            message: "请输入密码",
-            trigger: "blur",
+            required: true, message: '请输入密码', trigger: 'blur'
           },
-        ],
-        verifyPwd: [
-          {
-            required: true,
-            validator: verifyPwd,
-            trigger: "blur",
-          },
-        ],
-        email: [{ required: true, trigger: "blur", validator: checkEmail }],
-      },
+        ]
+      }
     };
   },
   methods: {
@@ -158,7 +116,7 @@ export default {
       this.loading = true;
       this.$router.replace({
         name: 'home',
-      }).catch(() =>{})
+      }).catch(() => { })
       this.loading = false;
       // login(loginForm)
       //   .then((res) => {
@@ -286,139 +244,13 @@ export default {
 </script>
 
 <style lang="less">
-// #Login {
-//   overflow-y: scroll;
-//   height: 100%;
-// }
-
-.login-panel {
-  z-index: 600;
-  position: fixed;
-  text-align: center;
-  width: 100vw;
-  height: 100vh;
-  // overflow-y: scroll;
-  margin: auto 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  // padding: 40px 0px;
-  .title {
-    // margin-top: 240px;
-    font-size: 30px;
-    text-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
-      rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-    color: #fff;
-  }
-
-  .login-box {
-    margin-top: 30px;
-    position: relative;
-    width: 360px;
-    height: 380px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-      rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    padding: 30px;
-    box-sizing: border-box;
-
-    display: flex;
-    justify-content: space-between;
-    // align-content: space-around;
-    flex-flow: column;
-    text-align: left;
-
-    .el-form {
-
-      // margin-top: 20px;
-      .el-form-item {
-        .el-form-item__label {
-          padding: 0px;
-          line-height: 36px;
-        }
-      }
-    }
-
-    .el-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      justify-items: flex-end;
-      padding: 0px;
-
-      .el-link {
-        justify-content: flex-end;
-        line-height: 40px;
-        width: 80px;
-      }
-    }
-
-    .register-panel {
-      margin-top: 16px;
-      display: flex;
-      justify-content: center;
-
-      .el-button {
-        width: 100%;
-      }
-    }
-  }
-
-  .title-tip {
-    color: #000;
-    margin-bottom: 22px;
-  }
-
-  .reset-pwd-box {
-    margin-top: 30px;
-    position: relative;
-    width: 360px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-      rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-    padding: 30px;
-    box-sizing: border-box;
-
-    display: flex;
-    justify-content: space-between;
-    flex-flow: column;
-    text-align: left;
-
-    .icon {
-      font-size: 22px;
-      cursor: pointer;
-      position: absolute;
-      right: 20px;
-    }
-
-    .el-form {
-      .el-row {
-        display: flex;
-        flex-direction: row;
-
-        .el-input {
-          margin-right: 20px;
-        }
-      }
-    }
-  }
-}
-
-.inner-header {
-  z-index: 200;
-  position: fixed;
-  top: 0px;
-  height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(60deg, #10239e 0%, #1e75b8 50%, #00cfbd 100%);
-  opacity: 0.75;
-}
-
-// @import url("@/assets/less/login.less");
+@import url('@/assets/less/login.less');
 </style>
+
+
+<!-- 
+  后台管理系统功能：
+  机构管理
+  用户管理
+  会议室管理
+ -->
