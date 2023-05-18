@@ -7,5 +7,13 @@ export default {
       method: 'get',
       params: data,
     })
+  },
+
+  getUserList(data) {
+    return axios({
+      url: '/api/user/sys/getUserList',
+      method: 'get',
+      params: data,
+    })
   }
 }

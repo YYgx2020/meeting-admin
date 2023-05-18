@@ -165,6 +165,7 @@ export default {
           expires: expire_time
         })
         this.$store.state.userInfo = userInfo;
+        this.$userInfo = userInfo;
         this.$router.replace({
           name: 'home',
         })

@@ -16,6 +16,7 @@ Vue.prototype.dayjs = dayjs;
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios; // 将axios绑定到vue的原型上
 Vue.prototype.$echarts = echarts;
+Vue.prototype.$userInfo = null;
 
 Vue.use(ElementUI);
 

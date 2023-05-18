@@ -2,8 +2,8 @@
   <div class="page">
     <div class="top-panel">
       <div class="top-item">
-        <el-input placeholder="输入关键词查询" v-model="keyWord1"></el-input>
-        <el-button type="primary" icon="el-icon-search" @click="searchOrganizationByKeyWord()">查找会议室</el-button>
+        <el-input placeholder="输入关键词查询" v-model="keyWord"></el-input>
+        <el-button type="primary" icon="el-icon-search" @click="searchRoomByKeyWord()">查找会议室</el-button>
       </div>
       <div class="top-item" v-if="false">
         <el-dropdown trigger="click" style="cursor: pointer;" @command="handleTypeSelect">
@@ -30,6 +30,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="name" label="会议室名称"></el-table-column>
+      <el-table-column prop="org_name" label="所属机构"></el-table-column>
       <el-table-column prop="contact" label="管理员"></el-table-column>
       <el-table-column prop="phone" label="联系方式"></el-table-column>
       <!-- <el-table-column prop="email" label="邮箱"></el-table-column> -->
@@ -37,13 +38,19 @@
       <el-table-column fixed="right" label="操作" width="240">
         <template slot-scope="scope">
           <el-button @click="lookDetail(scope.row)" type="text" size="small">查看简介</el-button>
-          <el-button @click="lookDetail(scope.row)" type="text" size="small">查看预约</el-button>
-          <el-button @click="lookDetail(scope.row)" type="text" size="small">修改信息</el-button>
-          <el-button @click="del(scope.row)" style="color: #f56c6c;" type="text" size="small">删除</el-button>
+          <!-- <el-button @click="lookDetail(scope.row)" type="text" size="small">查看预约</el-button> -->
+          <!-- <el-button @click="lookDetail(scope.row)" type="text" size="small">修改信息</el-button> -->
+          <!-- <el-button @click="del(scope.row)" style="color: #f56c6c;" type="text" size="small">删除</el-button> -->
         </template>
       </el-table-column>
     </el-table>
-
+    <!-- 查看简介对话框 -->
+    <el-dialog :title="roomName" :visible.sync="showDesc" width="40%">
+      <span>{{ desc }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="showDesc = false">确 定</el-button>
+      </span>
+    </el-dialog>
     <div class="pagination">
       <el-pagination background layout="prev, pager, next" :total="total" @prev-click="handlePrevClick"
         @next-click="handleNextClick" @current-change="handleCurrentChange">
@@ -62,6 +69,7 @@ export default {
   name: 'meeting',
   data() {
     return {
+      keyWord: null,
       tableData: null,
       total: 0,
       queryData: {
@@ -69,7 +77,10 @@ export default {
         limit: 10,
         is_system_admin: this.$store.state.userInfo.is_system_admin,
         is_delete: 0,
-      }
+      },
+      roomName: null,
+      showDesc: null,
+      desc: null,
     }
   },
   created() {
@@ -79,12 +90,26 @@ export default {
   },
 
   methods: {
+    
+    searchRoomByKeyWord() {
+      
+    },
+
     initData() {
+      console.log(this.$store.state.userInfo);
       meeting.getMeetingList(this.queryData).then(res => {
         console.log(res);
         this.tableData = res.data.result.rows;
         this.total = res.data.result.count;
       })
+
+      // const data = {
+      //   offset: 0,
+      //   limit: 10,
+      // }
+      // meeting.getUserList(data).then(res => {
+      //   console.log('用户数据：', res);
+      // })
     },
     // 分页
     handleCurrentChange(value) {
@@ -108,6 +133,12 @@ export default {
 
     resetData() {
       this.initData();
+    },
+
+    lookDetail(row) {
+      this.showDesc = true;
+      this.desc = row.description;
+      this.roomName = row.name + '简介';
     },
   }
 }
