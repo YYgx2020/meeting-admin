@@ -9,11 +9,24 @@
     <el-menu :router='true' :default-active="path" class="el-menu-vertical-demo" background-color="#304156"
       text-color="#fff" active-text-color="#409EFF">
       <div v-for="(item, index) in menus" :key="index + ''">
-        <el-menu-item :index="item.path">
-          <!-- <i :class="item.icon" class="icon"></i> -->
+        <el-menu-item :index="item.path" v-if="!item.meta.submenu">
+          <i :class="item.icon" class="icon"></i>
           <span slot="title">{{ item.meta.title }}
           </span>
         </el-menu-item>
+        <el-submenu v-if="item.meta.submenu" :index="index + 1">
+          <template slot="title">
+            <i class="icon" :class="submenu[0].icon"></i>
+            <span>{{ submenu[0].meta.title }}</span>
+          </template>
+          <div v-for="(items, indexs) in submenu[0].children" :key="indexs + ''">
+            <el-menu-item :index="items.path">
+              <i :class="items.icon" class="icon"></i>
+              <span slot="title">{{ items.meta.title }}
+              </span>
+            </el-menu-item>
+          </div>
+        </el-submenu>
       </div>
       <!-- <el-submenu index="1">
         <template slot="title">
@@ -41,6 +54,7 @@ export default {
       path: null,
       menus: [],
       adminInfo: null,
+      submenu: [],
     }
   },
   created() {
@@ -51,6 +65,8 @@ export default {
     console.log(this.$router.options);
     // 目前菜单较少
     this.menus = [...this.$router.options.routes[2].children];
+    this.submenu = this.menus.filter(item => item.meta.submenu);
+    console.log(this.submenu);
   },
 }
 </script>

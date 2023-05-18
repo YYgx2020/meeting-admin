@@ -7,7 +7,7 @@
     <!-- 标题 -->
     <div class="login_panel">
       <h1>会议室预约管理系统</h1>
-      <div class="login_box">
+      <div class="login_box" v-if="show">
         <h3>欢迎登录</h3>
         <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :rules="rules"
           ref="formLabelAlign">
@@ -19,9 +19,36 @@
           </el-form-item>
         </el-form>
         <el-row>
-          <el-link :underline="false">忘记密码？</el-link>
+          <el-link :underline="false" @click="show = false;">忘记密码？</el-link>
         </el-row>
         <el-button type="primary" round @click="loginEvent('formLabelAlign')">登录</el-button>
+      </div>
+      <!-- 重置密码 -->
+      <div class="reset-pwd-box" v-if="!show">
+        <h3 class="title-tip">重置密码</h3>
+        <i class="el-icon-close icon" @click="cancelReset()"></i>
+        <el-form :label-position="labelPosition" label-width="80px" :model="resetPwdForm" >
+          <el-form-item label="账号" prop="code">
+            <el-input v-model="resetPwdForm.code" placeholder="请输入你的电话号码"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" v-model="resetPwdForm.password" placeholder="请输入你的密码"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="verifyPwd">
+            <el-input type="password" v-model="resetPwdForm.verifyPwd" placeholder="请确认你的密码"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="resetPwdForm.email" placeholder="请输入你的邮箱"></el-input>
+          </el-form-item>
+          <el-row>
+            <el-input maxlength="6" placeholder="请输入验证码" v-model="resetPwdForm.verifyCode"></el-input>
+            <el-button :disabled="canSendCode" type="primary" @click="sendVerifyCode()">{{
+              canSendCode ? captchaTime + " 秒后重试" : "获取验证码"
+            }}</el-button>
+          </el-row>
+        </el-form>
+        <el-button style="margin-top: 22px;" type="primary" round @click="resetPwdEvent(resetPwdForm)"
+          :loading="resetLoading">{{ resetLoading ? '密码重置中...' : '重置密码' }}</el-button>
       </div>
     </div>
     <!-- 背景轮播图 -->
@@ -54,15 +81,17 @@
 </template>
 
 <script>
-import { login, getVerifyCode, changePassword } from "@/api";
+import { user } from "@/api";
 import Cookies from "js-cookie"; // 登录或者注册后使用 cookie 保存 token
 import { Notification } from 'element-ui';
+// import store from "@/store";
 const expire_time = 1;
 export default {
   name: "Login",
   components: {},
   data() {
     return {
+      show: true,
       cover: [
         require('../../assets/images/1.jpg'),
         require('../../assets/images/2.jpg'),
@@ -74,6 +103,13 @@ export default {
       formLabelAlign: {
         phone: '',
         password: '',
+      },
+      resetPwdForm: {
+        code: '',
+        password: '',
+        verifyPwd: '',
+        email: '',
+        verifyCode: '',
       },
       rules: {
         phone: [
@@ -114,10 +150,28 @@ export default {
         }
       }
       this.loading = true;
-      this.$router.replace({
-        name: 'home',
-      }).catch(() => { })
-      this.loading = false;
+      user.login(this.formLabelAlign).then(res => {
+        console.log(res);
+        this.loading = false;
+        const { userInfo } = res.data.result;
+        // 1. 将 token 和用户基本信息保存到 localStorage 和 cookie 中
+        // localStorage.setItem("yg_l_token", res.data.result.token)
+        // localStorage.setItem("userInfo", JSON.stringify(userInfo))
+        // 设置 cookie 5分钟后过期
+        Cookies.set('hrms_token', res.data.result.token, {
+          expires: expire_time
+        })
+        Cookies.set('userInfo', JSON.stringify(userInfo), {
+          expires: expire_time
+        })
+        this.$store.state.userInfo = userInfo;
+        this.$router.replace({
+          name: 'home',
+        })
+      })
+      // this.$router.replace({
+      //   name: 'home',
+      // }).catch(() => { })
       // login(loginForm)
       //   .then((res) => {
       //     this.loading = false;
@@ -178,7 +232,7 @@ export default {
         return;
       }
       try {
-        let res = await getVerifyCode({ email });
+        let res = await user.getVerifyCode({ email });
         console.log("验证码获取结果：", res);
         // Notification({
         //   title: "成功",

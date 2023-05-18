@@ -57,6 +57,20 @@ li {
   }
 }
 
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .pagination {
+    height: 60px;
+    // align-items: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
 .top-panel {
   width: 100%;
   // height: 80px;

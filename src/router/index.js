@@ -38,30 +38,76 @@ const routes = [
     },
     children: [
       {
+        path: "/home/dashboard",
+        name: "dashboard",
+        icon: "iconfont icon-shouye",
+        component: () => import("@/views/Dashboard"),
+        meta: {
+          title: "首页",
+          submenu: false,
+        },
+      },
+      {
         path: "/home/organization",
         name: "organization",
         icon: "iconfont icon-jigou",
+        redirect: '/home/organization/pass',
         component: () => import("@/views/Organization"),
         meta: {
           title: "机构管理",
+          submenu: true,
         },
+        children: [
+          {
+            path: "/home/organization/pass",
+            name: "organizationPass",
+            icon: "iconfont icon-shenhetongguo",
+            component: () => import("@/views/PassOrg"),
+            meta: {
+              title: "已入驻机构",
+              submenu: false,
+            },
+          },
+          {
+            path: "/home/organization/wait",
+            name: "OrganizationWait",
+            icon: "iconfont icon-daishenhe",
+            component: () => import("@/views/WaitList"),
+            meta: {
+              title: "待审核",
+              submenu: false,
+            },
+          },
+          {
+            path: "/home/organization/ban",
+            name: "OrganizationBan",
+            icon: "iconfont icon-dongjie2",
+            component: () => import("@/views/BanOrgList"),
+            meta: {
+              title: "封禁机构",
+              submenu: false,
+            },
+          },
+        ],
       },
       {
         path: "/home/meeting",
         name: "meeting",
-        icon: "iconfont icon-jigou",
+        icon: "iconfont icon-hangzhengguanli-huiyishiguanli",
         component: () => import("@/views/Meeting"),
         meta: {
           title: "会议室管理",
+          submenu: false,
         },
       },
       {
         path: "/home/user",
         name: "user",
-        icon: "iconfont icon-jigou",
+        icon: "iconfont icon-yonghu",
         component: () => import("@/views/User"),
         meta: {
           title: "用户管理",
+          submenu: false,
         },
       },
     ],

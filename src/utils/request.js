@@ -41,7 +41,7 @@ _axios.interceptors.request.use(
 /* 响应拦截器 */
 _axios.interceptors.response.use(
   (resp) => {
-    // console.log("响应拦截器数据：", resp);
+    console.log("响应拦截器数据：", resp);
     const data = resp.data;
     if (data.code != 200) {
       Notification({

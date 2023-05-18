@@ -1,7 +1,7 @@
 <template>
   <div id="Home">
     <el-container>
-      <el-aside width="240px">
+      <el-aside width="200px">
         <div class="logo">
           <h4>会议室预约管理系统</h4>
         </div>
